@@ -35,8 +35,10 @@ public class fragment3_toiletstate extends Fragment {
     private static String TAG = "phptest_MainActivity";
 
     private static final String TAG_JSON="webnautes";
-    private static final String TAG_doorNumber = "doorNumber";
-    private static final String TAG_state = "state";
+    //private static final String TAG_doorNumber = "doorNumber";
+    //private static final String TAG_state = "state";
+    private static final String TAG_doorNum = "doorNum";
+    private static final String TAG_doorState = "doorState";
     private TextView mTextViewResult;
     String mJsonString;
 
@@ -51,7 +53,7 @@ public class fragment3_toiletstate extends Fragment {
         View v = inflater.inflate(R.layout.fragment3_toiletstate, container, false);
         mTextViewResult = (TextView)v.findViewById(R.id.textView_main_result);
         fragment3_toiletstate.GetData task = new fragment3_toiletstate.GetData();
-        task.execute("http://192.168.200.199/gizitest.php");
+        task.execute("http://192.168.0.49/gizitest.php");
 
 
 
@@ -210,14 +212,14 @@ public class fragment3_toiletstate extends Fragment {
 
                 JSONObject item = jsonArray.getJSONObject(i);
 
-                String DoorNumber = item.getString(TAG_doorNumber);
-                String State = item.getString(TAG_state);
+                String DoorNum = item.getString(TAG_doorNum);
+                String DoorState = item.getString(TAG_doorState);
 
-                if (State.equals("1")) {
+                if (DoorState.equals("1")) {
 
-                    colortextview("text"+DoorNumber,getView());
+                    colortextview("text"+DoorNum,getView());
 
-                    System.out.println("text"+DoorNumber);
+                    System.out.println("text"+DoorNum);
                 }
 
             }
