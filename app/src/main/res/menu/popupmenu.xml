@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <item android:id="@+id/popup_select"
+        android:title="편집"/>
+    <item android:id="@+id/popup_delete"
+        android:title="삭제"/>
+    <item android:id="@+id/popup_allselect"
+        android:title="전체선택"/>
+</menu>
