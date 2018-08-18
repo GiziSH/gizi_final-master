@@ -1,0 +1,192 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- TODO: Update blank fragment layout -->
+
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="15dp"
+        android:textSize="30sp"
+        android:text="현재 화장실의 상태\n*남자화장실의 경우,\n 소변기의 상태는 제외"
+
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:id="@+id/center"
+        android:layout_width="300sp"
+        android:layout_height="210sp"
+        android:layout_centerInParent="true"
+        android:background="#fef7d0"
+        android:text=""
+        android:textColor="#ffffff"
+        android:textSize="150sp"/>
+    <TextView
+        android:id="@+id/text1"
+        android:layout_width="100sp"
+        android:layout_height="60sp"
+        android:layout_alignLeft="@id/center"
+        android:layout_alignTop="@id/center"
+        android:background="#00ff00"
+        android:text="1번"
+        android:textColor="#ffffff"
+        android:textSize="50sp" />
+
+    <TextView
+        android:layout_width="100sp"
+        android:layout_height="60sp"
+        android:layout_alignBottom="@id/center"
+        android:layout_alignRight="@id/center"
+        android:background="#00ff00"
+        android:text="6번"
+        android:textColor="#ffffff"
+        android:textSize="50sp"
+        android:id="@+id/text6" />
+
+    <TextView
+        android:layout_width="100sp"
+        android:layout_height="60sp"
+        android:layout_alignTop="@id/center"
+        android:layout_alignRight="@id/center"
+        android:background="#00ff00"
+        android:text="3번"
+        android:textColor="#ffffff"
+        android:textSize="50sp"
+        android:id="@+id/text3" />
+    <TextView
+        android:id="@+id/text2"
+        android:layout_width="100sp"
+        android:layout_height="60sp"
+        android:background="#00ff00"
+        android:text="2번"
+        android:textColor="#ffffff"
+        android:textSize="50sp"
+        android:layout_alignBaseline="@+id/text1"
+        android:layout_alignBottom="@+id/text1"
+        android:layout_toRightOf="@+id/text1"
+        android:layout_toEndOf="@+id/text1" />
+    <TextView
+        android:layout_width="100sp"
+        android:layout_height="60sp"
+        android:layout_alignBottom="@id/center"
+        android:layout_alignLeft="@id/center"
+        android:background="#00ff00"
+        android:text="4번"
+        android:textColor="#ffffff"
+        android:textSize="50sp"
+        android:id="@+id/text4" />
+    <TextView
+        android:layout_width="100sp"
+        android:layout_height="60sp"
+        android:background="#00ff00"
+        android:text="5번"
+        android:textColor="#ffffff"
+        android:textSize="50sp"
+        android:id="@+id/text5"
+        android:layout_alignBaseline="@+id/text6"
+        android:layout_alignBottom="@+id/text6"
+        android:layout_toRightOf="@+id/text4"
+        android:layout_toEndOf="@+id/text4" />
+    <TextView
+        android:layout_width="30sp"
+        android:layout_height="50sp"
+        android:background="#fff700"
+        android:text="문"
+        android:textColor="#000000"
+        android:textSize="30sp"
+        android:layout_centerVertical="true"
+        android:layout_alignRight="@+id/center"
+        android:layout_alignEnd="@+id/center"
+        android:id="@+id/door" />
+
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="430dp"
+        android:layout_marginLeft="30dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="30sp"
+                android:layout_height="30sp"
+                app:srcCompat="@drawable/waiting" />
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="30sp"
+                android:text="예상 대기 인원 "
+                android:layout_marginLeft="20dp" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp">
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="30sp"
+                android:layout_height="30sp"
+                app:srcCompat="@drawable/smile" />
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="30sp"
+                android:text="화장실 만족지수"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="20dp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="100dp">
+            <TextView
+                android:id="@+id/textView9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="30sp"
+                android:text="화장실 만족도 투표 go"
+                />
+
+            <ImageView
+                android:id="@+id/click"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                app:srcCompat="@drawable/click"
+                android:layout_marginLeft="20dp" />
+        </LinearLayout>
+    </RelativeLayout>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="4"
+        android:layout_margin="5dp"
+        android:padding="5dp"
+        android:id="@+id/textView_main_result" />
+
+
+</RelativeLayout>
