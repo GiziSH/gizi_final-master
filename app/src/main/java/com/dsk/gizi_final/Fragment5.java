@@ -81,6 +81,7 @@ public class Fragment5 extends Fragment {
 
         return v;
     }
+
     public class registDB extends AsyncTask<Void, Integer, Void> {
         String data = "";
         @Override
