@@ -65,6 +65,7 @@ public class WriteConfirmFragment extends Fragment {
                 writeFixFragment.setArguments(bundle);
                 android.support.v4.app.FragmentTransaction fragmenttransaction = getFragmentManager().beginTransaction();
                 fragmenttransaction.replace(R.id.fragment_container, writeFixFragment);
+                fragmenttransaction.addToBackStack(null);
                 fragmenttransaction.commit();
 
             }
@@ -76,6 +77,7 @@ public class WriteConfirmFragment extends Fragment {
                 DeleteFragment deleteFragment = new DeleteFragment();
                 android.support.v4.app.FragmentTransaction fragmenttransaction = getFragmentManager().beginTransaction();
                 fragmenttransaction.replace(R.id.fragment_container, deleteFragment);
+                fragmenttransaction.addToBackStack(null);
                 fragmenttransaction.commit();
             }
         });
@@ -86,6 +88,7 @@ public class WriteConfirmFragment extends Fragment {
                 Fragment4 fragment4 = new Fragment4();
                 android.support.v4.app.FragmentTransaction fragmenttransaction = getFragmentManager().beginTransaction();
                 fragmenttransaction.replace(R.id.fragment_container, fragment4);
+                fragmenttransaction.addToBackStack(null);
                 fragmenttransaction.commit();
             }
         });

@@ -4,27 +4,40 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="15dp"
+
     >
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/center"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="7"
-            android:text="게시물 목록"
-            android:textStyle="bold"
-            android:textSize="35dp"/>
+        android:layout_height="50dp"
+        android:layout_centerInParent="true"
+        android:background="@color/Chill"
+        android:text=""
+        android:textColor="#ffffff"
+        android:textSize="150sp"/>
+    <TextView
+        android:id="@+id/tv_board"
+        android:textColor="@color/cunmetal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="30dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:text="게시물 목록"
+        android:textStyle="bold"
+        />
+    <Button
+        android:id="@+id/write_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:drawableLeft="@drawable/write"
+        android:drawablePadding="5dp"
+        android:background="#00000000"
+        android:textSize="20dp"
+        android:text="글쓰기" />
 
-        <Button
-            android:id="@+id/write_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Write" />
-    </LinearLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"

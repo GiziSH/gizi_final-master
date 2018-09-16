@@ -1,6 +1,7 @@
 package com.dsk.gizi_final;
 
 import android.app.ProgressDialog;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,6 +14,7 @@ import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -28,6 +30,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Fragment4 extends Fragment {
+    Typeface BMhanna;
+
     private static String TAG = "phptest_MainActivity";
 
     private static final String TAG_JSON="webnautes";
@@ -45,6 +49,10 @@ public class Fragment4 extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_fragment4, container, false);
+        BMhanna = Typeface.createFromAsset(getContext().getAssets(),"bmhanna_11yrs_ttf.ttf");
+
+        TextView tv_board = (TextView) v.findViewById(R.id.tv_board);
+        tv_board.setTypeface(BMhanna);
         //mTextViewResult = (TextView)v.findViewById(R.id.textView_main_result);
         mlistView = (ListView) v.findViewById(R.id.listView_main_list);
         mArrayList = new ArrayList<>();
@@ -56,15 +64,16 @@ public class Fragment4 extends Fragment {
                 WriteFragment writeFragment = new WriteFragment();
                 android.support.v4.app.FragmentTransaction fragmenttransaction = getFragmentManager().beginTransaction();
                 fragmenttransaction.replace(R.id.fragment_container, writeFragment);
+                fragmenttransaction.addToBackStack(null);
                 fragmenttransaction.commit();
             }
         });
 
-        GetData refresh = new GetData();
-        refresh.execute("http://192.168.219.109/num_refresh.php");
+        GetData2 refresh = new GetData2();
+        //refresh.execute("http://192.168.219.109/num_refresh.php");
 
-        GetData task = new GetData();
-        task.execute("http://192.168.219.109/getjson.php");
+        GetData2 task = new GetData2();
+        //task.execute("http://192.168.219.109/getjson.php");
 
         mlistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -84,6 +93,7 @@ public class Fragment4 extends Fragment {
                 listDetailFragment.setArguments(bundle);
                 android.support.v4.app.FragmentTransaction fragmenttransaction = getFragmentManager().beginTransaction();
                 fragmenttransaction.replace(R.id.fragment_container, listDetailFragment);
+                fragmenttransaction.addToBackStack(null);
                 fragmenttransaction.commit();
 
             }
@@ -93,7 +103,7 @@ public class Fragment4 extends Fragment {
 
 
 
-    private class GetData extends AsyncTask<String, Void, String> {
+    private class GetData2 extends AsyncTask<String, Void, String> {
         ProgressDialog progressDialog;
         String errorString = null;
 
@@ -118,7 +128,7 @@ public class Fragment4 extends Fragment {
             }
             else {
                 mJsonString = result;
-                showResult();
+                showResult2();
             }
         }
 
@@ -181,7 +191,7 @@ public class Fragment4 extends Fragment {
     }
 
 
-    private void showResult(){
+    private void showResult2(){
         try {
             JSONObject jsonObject = new JSONObject(mJsonString);
             JSONArray jsonArray = jsonObject.getJSONArray(TAG_JSON);
