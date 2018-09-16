@@ -1,19 +1,16 @@
 package com.dsk.gizi_final;
 
+
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.ListAdapter;
-import android.widget.ListView;
-import android.widget.SimpleAdapter;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -25,65 +22,40 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
 
-public class Fragment4 extends Fragment {
+public class FinalConfirm extends Fragment{
     private static String TAG = "phptest_MainActivity";
-
     private static final String TAG_JSON="webnautes";
     private static final String TAG_NUM = "num";
     private static final String TAG_AUTHOR ="author";
     private static final String TAG_TITLE = "title";
     private static final String TAG_TIME ="time";
     private static final String TAG_CONTENT ="content";
-
-    //private TextView mTextViewResult;
-    ArrayList<HashMap<String, String>> mArrayList;
-    ListView mlistView;
+    private Button btn_fix, btn_delete, btn_commit;
+    private TextView titleView, authorView, contentView;
+    ArrayList mArrayList;
     String mJsonString;
-
+    String num, title, author, content;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_fragment4, container, false);
-        //mTextViewResult = (TextView)v.findViewById(R.id.textView_main_result);
-        mlistView = (ListView) v.findViewById(R.id.listView_main_list);
-        mArrayList = new ArrayList<>();
+        View v = inflater.inflate(R.layout.fragment_finalconfirm, container, false);
 
-        Button writebutton = (Button) v.findViewById(R.id.write_button);
-        writebutton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                WriteFragment writeFragment = new WriteFragment();
-                android.support.v4.app.FragmentTransaction fragmenttransaction = getFragmentManager().beginTransaction();
-                fragmenttransaction.replace(R.id.fragment_container, writeFragment);
-                fragmenttransaction.commit();
-            }
-        });
+        num = getArguments().getString("num");
 
-        GetData refresh = new GetData();
-        refresh.execute("http://192.168.219.109/num_refresh.php");
+        titleView = (TextView) v.findViewById(R.id.titleview);
+        authorView = (TextView) v.findViewById(R.id.authorview);
+        contentView = (TextView) v.findViewById(R.id.contentview);
 
         GetData task = new GetData();
-        task.execute("http://192.168.219.109/getjson.php");
+        task.execute("http://192.168.219.109/board_confirm.php");
 
-        mlistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        btn_commit = (Button) v.findViewById(R.id.commitbutton);
+        btn_commit.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String num_result = new String(mArrayList.get(position).get(TAG_NUM));
-                String title_result = new String(mArrayList.get(position).get(TAG_TITLE));
-                String author_result = new String(mArrayList.get(position).get(TAG_AUTHOR));
-                String content_result = new String(mArrayList.get(position).get(TAG_CONTENT));
-
-                Bundle bundle = new Bundle();
-                bundle.putString("num", num_result);
-                bundle.putString("title",title_result);
-                bundle.putString("author",author_result);
-                bundle.putString("content",content_result);
-
-                ListDetailFragment listDetailFragment = new ListDetailFragment();
-                listDetailFragment.setArguments(bundle);
+            public void onClick(View v) {
+                Fragment4 fragment4 = new Fragment4();
                 android.support.v4.app.FragmentTransaction fragmenttransaction = getFragmentManager().beginTransaction();
-                fragmenttransaction.replace(R.id.fragment_container, listDetailFragment);
+                fragmenttransaction.replace(R.id.fragment_container, fragment4);
                 fragmenttransaction.commit();
 
             }
@@ -91,9 +63,8 @@ public class Fragment4 extends Fragment {
         return v;
     }
 
-
-
     private class GetData extends AsyncTask<String, Void, String> {
+
         ProgressDialog progressDialog;
         String errorString = null;
 
@@ -105,13 +76,12 @@ public class Fragment4 extends Fragment {
 
         }
 
-
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
             progressDialog.dismiss();
             //mTextViewResult.setText(result);
-            Log.d(TAG, "result  - " + result);
+            Log.d(TAG, "response  - " + result);
 
             if (result == null){
                 // mTextViewResult.setText(errorString);
@@ -125,20 +95,16 @@ public class Fragment4 extends Fragment {
 
         @Override
         protected String doInBackground(String... params) {
+            String param = "u_num=" + num + "";
 
             String serverURL = params[0];
-
-
             try {
 
                 URL url = new URL(serverURL);
                 HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
-
-
                 httpURLConnection.setReadTimeout(5000);
                 httpURLConnection.setConnectTimeout(5000);
                 httpURLConnection.connect();
-
 
                 int responseStatusCode = httpURLConnection.getResponseCode();
                 Log.d(TAG, "response code - " + responseStatusCode);
@@ -151,7 +117,6 @@ public class Fragment4 extends Fragment {
                     inputStream = httpURLConnection.getErrorStream();
                 }
 
-
                 InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
                 BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
 
@@ -161,8 +126,6 @@ public class Fragment4 extends Fragment {
                 while((line = bufferedReader.readLine()) != null){
                     sb.append(line);
                 }
-
-
                 bufferedReader.close();
 
 
@@ -180,40 +143,22 @@ public class Fragment4 extends Fragment {
         }
     }
 
-
     private void showResult(){
+        String title = " ";
+        String author = " ";
+        String content = " ";
         try {
             JSONObject jsonObject = new JSONObject(mJsonString);
             JSONArray jsonArray = jsonObject.getJSONArray(TAG_JSON);
 
-            for(int i=0;i<jsonArray.length();i++){
+            JSONObject item = jsonArray.getJSONObject(jsonArray.length()-1);
+            title = item.getString(TAG_TITLE);
+            author = item.getString(TAG_AUTHOR);
+            content = item.getString(TAG_CONTENT);
 
-                JSONObject item = jsonArray.getJSONObject(i);
-
-                String num = item.getString(TAG_NUM);
-                String title = item.getString(TAG_TITLE);
-                String author = item.getString(TAG_AUTHOR);
-                String time = item.getString(TAG_TIME);
-                String content = item.getString(TAG_CONTENT);
-
-                HashMap<String,String> hashMap = new HashMap<>();
-
-                hashMap.put(TAG_NUM, num);
-                hashMap.put(TAG_TITLE, title);
-                hashMap.put(TAG_AUTHOR, author);
-                hashMap.put(TAG_TIME, time);
-                hashMap.put(TAG_CONTENT, content);
-
-                mArrayList.add(hashMap);
-            }
-
-            ListAdapter adapter = new SimpleAdapter(
-                    getActivity(), mArrayList, R.layout.item_list,
-                    new String[]{TAG_NUM,TAG_TITLE, TAG_AUTHOR, TAG_TIME, TAG_CONTENT},
-                    new int[]{R.id.textView_list_num, R.id.textView_list_title, R.id.textView_list_author, R.id.textView_list_time}
-            );
-
-            mlistView.setAdapter(adapter);
+            titleView.setText(title);
+            authorView.setText(author);
+            contentView.setText(content);
 
         } catch (JSONException e) {
 
@@ -221,6 +166,4 @@ public class Fragment4 extends Fragment {
         }
 
     }
-
 }
-
