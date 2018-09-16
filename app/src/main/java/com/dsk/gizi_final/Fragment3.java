@@ -1,8 +1,8 @@
 package com.dsk.gizi_final;
 
-
 import android.app.ProgressDialog;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -30,9 +30,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -47,6 +50,8 @@ import static android.content.Context.MODE_PRIVATE;
  * A simple {@link Fragment} subclass.
  */
 public class Fragment3 extends Fragment  {
+    Typeface BMhanna;
+
     private static String TAG = "phptest_MainActivity";
     private static final String TAG_JSON="webnautes";
     private static final String TAG_name = "name";
@@ -78,6 +83,7 @@ public class Fragment3 extends Fragment  {
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
 
+    String SRname;
     public Fragment3() {
         // Required empty public constructor
 
@@ -87,6 +93,7 @@ public class Fragment3 extends Fragment  {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_fragment3, container, false);
+        BMhanna = Typeface.createFromAsset(getContext().getAssets(),"bmhanna_11yrs_ttf.ttf");
 
         mTextViewResult = (TextView)v.findViewById(R.id.textView_main_result);
         //즐겨찾기
@@ -106,39 +113,58 @@ public class Fragment3 extends Fragment  {
         //task.execute("http://192.168.0.7/searchtest.php");
 
 
-
+//
         // 지하철역,휴게소 선택
         String [] values1 = {"선택","지하철역","휴게소"};
         MySpinner1 = (Spinner)v.findViewById(R.id.option);
-        final ArrayAdapter<String> adapterSpinner1 = new ArrayAdapter(this.getActivity(), android.R.layout.simple_spinner_item);
-        adapterSpinner1.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+        /*ArrayAdapter<String> adapterSpinner = new ArrayAdapter<String>(
+                this.getActivity(),
+                R.layout.spinner_simple
+        );*/
+        final ArrayAdapter<String> adapterSpinner1 = new ArrayAdapter(this.getActivity(), R.layout.spinner_simple);
+        adapterSpinner1.setDropDownViewResource( R.layout.spinner_simple);
         MySpinner1.setAdapter(adapterSpinner1);
         adapterSpinner1.addAll(values1);
         MySpinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-             @Override
-             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                 switch (position){
-                     case 0:
-                         mArrayList.clear();
-                         break;
-                     case 1:
-                         mArrayList.clear();
-                         GetData task = new GetData();
-                         task.execute("http://192.168.200.199/subway_search.php");
-                         break;
-                     case 2:
-                         mArrayList.clear();
-                         GetData task2 = new GetData();
-                         task2.execute("http://192.168.200.199/restarea_search.php");
-                         break;
-                 }
-             }
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                switch (position){
+                    case 0:
 
-             @Override
-             public void onNothingSelected(AdapterView<?> parent) {
+                        madapter.deletetoilet();
+                        mlistView.setAdapter(madapter);
+                        break;
+                    case 1:
 
-             }
-         });
+                        madapter.deletetoilet();
+
+                        //task.execute("http://192.168.200.199/subway_search.php");
+                        SRname = "subway";
+                        GetData task = new GetData();
+                        //task.execute("http://192.168.200.199/select_toilet.php");
+                        task.execute("http://172.17.108.227/select_toilet.php");
+
+                        //fragment3_option.SRname(SRname);
+
+                        break;
+                    case 2:
+
+                        madapter.deletetoilet();
+
+                        //task2.execute("http://192.168.200.199/restarea_search.php");
+                        SRname = "restarea";
+                        GetData task2 = new GetData();
+                        //task2.execute("http://192.168.200.199/select_toilet.php");
+                        task2.execute("http://172.17.108.227/select_toilet.php");
+                        break;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
 
         editSearch = (EditText) v.findViewById(R.id.editSearch);
@@ -161,7 +187,7 @@ public class Fragment3 extends Fragment  {
 
                 fragment3_option op = new fragment3_option();
                 android.support.v4.app.FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.fragment_container, op);
+                fragmentTransaction.replace(R.id.fragment_container, fragment3_option.Tname(str1));
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
 
@@ -171,12 +197,12 @@ public class Fragment3 extends Fragment  {
         editSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            //start 지점에서 시작되는 count갯수만큼 글자들이 after길이만큼의 글자로 대치되려고 할때 호출됨
+                //start 지점에서 시작되는 count갯수만큼 글자들이 after길이만큼의 글자로 대치되려고 할때 호출됨
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-            //start 지점에서 시작되는 before 갯수만큼의 글자들이 count갯수만큼의 글자드롤 대치되었을 때 호출
+                //start 지점에서 시작되는 before 갯수만큼의 글자들이 count갯수만큼의 글자드롤 대치되었을 때 호출
             }
 
             @Override
@@ -199,6 +225,7 @@ public class Fragment3 extends Fragment  {
     }
 
     //즐겨찾기
+    /*
     //배열안에 집어넣기
     public void addbookmark(String value) {
 
@@ -256,7 +283,7 @@ public class Fragment3 extends Fragment  {
             }
         }
     }
-
+    */
 
 
 
@@ -309,6 +336,7 @@ public class Fragment3 extends Fragment  {
     private class GetData extends AsyncTask<String, Void, String> {
         ProgressDialog progressDialog;
         String errorString = null;
+        String data = "";
 
         @Override
         protected void onPreExecute() {
@@ -320,86 +348,75 @@ public class Fragment3 extends Fragment  {
 
 
         @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-
+        protected void onPostExecute(String data) {
+            super.onPostExecute(data);
             progressDialog.dismiss();
-            mTextViewResult.setText(result);
-            Log.d(TAG, "response  - " + result);
+            mTextViewResult.setText(data);
+            Log.d(TAG, "response  - " + data);
 
-            if (result == null){
+            if (data == null){
 
                 mTextViewResult.setText(errorString);
             }
             else {
 
-                mJsonString = result;
+                mJsonString = data;
                 showResult();
 
             }
         }
-
-
         @Override
         protected String doInBackground(String... params) {
 
+            /* 인풋 파라메터값 생성 */
+            String param = "t_SR=" + SRname +  "";
+            Log.e("POST",param);
             String serverURL = params[0];
-
-
             try {
-
+                /* 서버연결 */
                 URL url = new URL(serverURL);
-                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                conn.setRequestMethod("POST");
+                conn.setDoInput(true);
+                conn.connect();
 
+                /* 안드로이드 -> 서버 파라메터값 전달 */
+                OutputStream outs = conn.getOutputStream();
+                outs.write(param.getBytes("UTF-8"));
+                outs.flush();
+                outs.close();
 
-                httpURLConnection.setReadTimeout(5000);
-                httpURLConnection.setConnectTimeout(5000);
-                httpURLConnection.connect();
-
-
-                int responseStatusCode = httpURLConnection.getResponseCode();
-                Log.d(TAG, "response code - " + responseStatusCode);
-
-                InputStream inputStream;
-                if(responseStatusCode == HttpURLConnection.HTTP_OK) {
-                    inputStream = httpURLConnection.getInputStream();
+                /* 서버 -> 안드로이드 파라메터값 전달 */
+                InputStream is = null;
+                BufferedReader in = null;
+                is = conn.getInputStream();
+                in = new BufferedReader(new InputStreamReader(is), 8 * 1024);
+                String line = null;
+                StringBuffer buff = new StringBuffer();
+                while ( ( line = in.readLine() ) != null )
+                {
+                    buff.append(line + "\n");
                 }
-                else{
-                    inputStream = httpURLConnection.getErrorStream();
-                }
+                data = buff.toString().trim();
+
+                /* 서버에서 응답 */
+                Log.e("RECV DATA",data);
 
 
-                InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
-                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-
-                StringBuilder sb = new StringBuilder();
-                String line;
-
-                while((line = bufferedReader.readLine()) != null){
-                    sb.append(line);
-                }
-
-
-                bufferedReader.close();
-
-
-                return sb.toString().trim();
-
-
-            } catch (Exception e) {
-
-                Log.d(TAG, "InsertData: Error ", e);
-                errorString = e.toString();
-
-                return null;
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
 
+            return data;
         }
+
     }
 
     private void showResult(){
 
-        //ToiletAdapter madapter = new ToiletAdapter();
         try {
             JSONObject jsonObject = new JSONObject(mJsonString);
             JSONArray jsonArray = jsonObject.getJSONArray(TAG_JSON);
@@ -421,7 +438,7 @@ public class Fragment3 extends Fragment  {
 
                 //System.out.println(bookmark);
 
-                madapter.addtoilet(ContextCompat.getDrawable(getContext(),img[0]),name,line);
+                madapter.addtoilet(ContextCompat.getDrawable(getContext(),img[0]),name,line,bookmark);
 
             }
 
@@ -443,28 +460,7 @@ public class Fragment3 extends Fragment  {
 
     }
 
-    public void checkbookmark(){
-        Toilet toilet = new Toilet();
-        showbookmark();
-        for (int i=0;i<madapter.getCount();i++){
-            String str1 = new String(mArrayList.get(i).get(TAG_name));
-            showbookmark();
-            for (int j=0;j<list_bookmark.size();j++){
-                String str2 = new String(list_bookmark.get(j));
 
-                if (str1==str2){
-                    //madapter.
-                    //toilet.setSelected(true);
-
-                } else {
-                    //toilet.setSelected(false);
-                }
-            }
-
-
-        }
-
-    }
 
 
     //화장실 검색하기

@@ -13,6 +13,7 @@ public class Toilet implements Parcelable {
     private Drawable img;
     private String Toiletname;
     private String Toiletline;
+    private String bookmark;
     private boolean isSelected;
 
     public static final Parcelable.Creator<Toilet> CREATOR = new Parcelable.Creator<Toilet>() {
@@ -31,7 +32,7 @@ public class Toilet implements Parcelable {
     }
 
     public Toilet() {
-
+//
     }
 
 
@@ -84,5 +85,16 @@ public class Toilet implements Parcelable {
     }
 
 
+    public Boolean getBookmark() {
+        if (bookmark.equals("1")) {
+            return true;
+        } else {
+            return false;
+        }
+        //return Boolean.valueOf(bookmark);
+    }
 
+    public void setBookmark(String bookmark) {
+        this.bookmark = bookmark;
+    }
 }

@@ -1,11 +1,14 @@
 package com.dsk.gizi_final;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 /**
  * Created by suhyun on 2018-03-30.
@@ -23,6 +26,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+        //        WindowManager.LayoutParams.FLAG_FULLSCREEN);
+//
+
         setContentView(R.layout.activity_main);
 
         bt_tab1 = (Button)findViewById(R.id.bt_tab1);
@@ -91,10 +98,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case 3:
                 // '프래그먼트3' 호출
-                fragment3_toiletstate f3t = new fragment3_toiletstate();
-                transaction.replace(R.id.fragment_container,f3t);
-                //Fragment3 fragment3 = new Fragment3();
-                //transaction.replace(R.id.fragment_container, fragment3);
+                //fragment3_toiletstate f3t = new fragment3_toiletstate();
+                //transaction.replace(R.id.fragment_container,f3t);
+                Fragment3 fragment3 = new Fragment3();
+                transaction.replace(R.id.fragment_container, fragment3);
                 transaction.commit();
                 break;
 
@@ -115,4 +122,3 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 }
-

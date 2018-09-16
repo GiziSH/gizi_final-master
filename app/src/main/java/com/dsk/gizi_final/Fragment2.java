@@ -2,8 +2,10 @@ package com.dsk.gizi_final;
 
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -15,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
@@ -31,7 +34,10 @@ import java.util.List;
  * A simple {@link Fragment} subclass.
  */
 public class Fragment2 extends Fragment {
-    Button mBtn;
+    Typeface BMhanna;
+
+
+    ImageButton mBtn;
     Button deleteBtn;
     private List<String> list_names;
     private SharedPreferences pref;
@@ -48,22 +54,27 @@ public class Fragment2 extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_fragment2, container, false);
+        BMhanna = Typeface.createFromAsset(getContext().getAssets(),"bmhanna_11yrs_ttf.ttf");
+
+        TextView tv_recentsearch = (TextView) v.findViewById(R.id.tv_recentsearch);
+        tv_recentsearch.setTypeface(BMhanna);
 
         pref = getActivity().getSharedPreferences("pref",getActivity().MODE_PRIVATE);
         editor = pref.edit();
 
         rs_listview = (ListView) v.findViewById(R.id.recent_listview);
         TextView tx = (TextView)v.findViewById(R.id.empty_text);
+
         rs_listview.setEmptyView(tx);
 
 
         list_names = new ArrayList<>();
         showLately();
-        final ArrayAdapter<String> rsadapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1,list_names);
+        final ArrayAdapter<String> rsadapter = new ArrayAdapter<String>(getActivity(),R.layout.simple_list,list_names);
         rs_listview.setAdapter(rsadapter);
 
 
-        mBtn = (Button)v.findViewById(R.id.popup_menu);
+        mBtn = (ImageButton)v.findViewById(R.id.popup_menu);
         mBtn.setOnClickListener(new View.OnClickListener(){
 
             @Override
@@ -92,6 +103,8 @@ public class Fragment2 extends Fragment {
                                 break;
                             case R.id.popup_delete:
                                 SparseBooleanArray checkedItems = rs_listview.getCheckedItemPositions();
+                                Log.e("check", String.valueOf(checkedItems.get(0)));
+
                                 int count = rsadapter.getCount() ;
                                 for (int i = count-1; i >= 0; i--) {
                                     if (checkedItems.get(i)) {
@@ -131,10 +144,12 @@ public class Fragment2 extends Fragment {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String selected_item = new String(String.valueOf(parent.getItemAtPosition(position)));
+
 
                 fragment3_option op = new fragment3_option();
                 android.support.v4.app.FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.fragment_container, op);
+                fragmentTransaction.replace(R.id.fragment_container, fragment3_option.Tname(selected_item));
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
             }
@@ -152,7 +167,7 @@ public class Fragment2 extends Fragment {
         editor.putString("lately", a);
         editor.commit();
     }
-
+    //
     //내부메모리에서 불러오기
     public void showLately(){
         String json = pref.getString("lately", null);

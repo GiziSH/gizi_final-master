@@ -3,20 +3,29 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    >
-
+    tools:context="com.suhyun.gizi2.Fragment1">
+    <TextView
+        android:id="@+id/center"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_centerInParent="true"
+        android:background="@color/Chill"
+        android:text=""
+        android:textColor="#ffffff"
+        android:textSize="150sp"/>
     <LinearLayout
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
         <Spinner
             android:id="@+id/option"
-            android:layout_width="140dp"
-            android:layout_height="wrap_content">
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            >
         </Spinner>
         <EditText
             android:id="@+id/editSearch"
-            android:layout_width="260dp"
+            android:layout_width="235dp"
             android:layout_height="30dp"
             android:layout_gravity="right"
             android:background="@drawable/round"
@@ -27,7 +36,7 @@
 
     </LinearLayout>
     <LinearLayout
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="50dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 

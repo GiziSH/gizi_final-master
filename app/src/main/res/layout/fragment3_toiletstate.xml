@@ -23,83 +23,73 @@
         android:layout_width="300sp"
         android:layout_height="210sp"
         android:layout_centerInParent="true"
-        android:background="#fef7d0"
+        android:background="@color/whitewash"
         android:text=""
         android:textColor="#ffffff"
         android:textSize="150sp"/>
-    <TextView
+    <ImageView
         android:id="@+id/text1"
         android:layout_width="100sp"
         android:layout_height="60sp"
+        android:src="@drawable/opendoor"
         android:layout_alignLeft="@id/center"
         android:layout_alignTop="@id/center"
-        android:background="#00ff00"
-        android:text="1번"
-        android:textColor="#ffffff"
-        android:textSize="50sp" />
-
-    <TextView
-        android:layout_width="100sp"
-        android:layout_height="60sp"
-        android:layout_alignBottom="@id/center"
-        android:layout_alignRight="@id/center"
-        android:background="#00ff00"
-        android:text="6번"
-        android:textColor="#ffffff"
-        android:textSize="50sp"
-        android:id="@+id/text6" />
-
-    <TextView
-        android:layout_width="100sp"
-        android:layout_height="60sp"
-        android:layout_alignTop="@id/center"
-        android:layout_alignRight="@id/center"
-        android:background="#00ff00"
-        android:text="3번"
-        android:textColor="#ffffff"
-        android:textSize="50sp"
-        android:id="@+id/text3" />
-    <TextView
+        />
+    <ImageView
         android:id="@+id/text2"
         android:layout_width="100sp"
         android:layout_height="60sp"
-        android:background="#00ff00"
-        android:text="2번"
-        android:textColor="#ffffff"
-        android:textSize="50sp"
+        android:src="@drawable/opendoor"
         android:layout_alignBaseline="@+id/text1"
         android:layout_alignBottom="@+id/text1"
         android:layout_toRightOf="@+id/text1"
-        android:layout_toEndOf="@+id/text1" />
-    <TextView
+        android:layout_toEndOf="@+id/text1"
+        />
+    <ImageView
+        android:id="@+id/text3"
         android:layout_width="100sp"
         android:layout_height="60sp"
+        android:src="@drawable/opendoor"
+        android:layout_alignTop="@id/center"
+        android:layout_alignRight="@id/center"
+        />
+    <ImageView
+        android:id="@+id/text4"
+        android:layout_width="100sp"
+        android:layout_height="60sp"
+        android:src="@drawable/opendoor"
         android:layout_alignBottom="@id/center"
         android:layout_alignLeft="@id/center"
-        android:background="#00ff00"
-        android:text="4번"
-        android:textColor="#ffffff"
-        android:textSize="50sp"
-        android:id="@+id/text4" />
-    <TextView
+        />
+    <ImageView
+        android:id="@+id/text5"
         android:layout_width="100sp"
         android:layout_height="60sp"
-        android:background="#00ff00"
-        android:text="5번"
-        android:textColor="#ffffff"
-        android:textSize="50sp"
-        android:id="@+id/text5"
+        android:src="@drawable/opendoor"
         android:layout_alignBaseline="@+id/text6"
         android:layout_alignBottom="@+id/text6"
         android:layout_toRightOf="@+id/text4"
-        android:layout_toEndOf="@+id/text4" />
+        android:layout_toEndOf="@+id/text4"
+        />
+    <ImageView
+        android:id="@+id/text6"
+        android:layout_width="100sp"
+        android:layout_height="60sp"
+        android:src="@drawable/opendoor"
+        android:layout_alignBottom="@id/center"
+        android:layout_alignRight="@id/center"
+        />
+
+
+
     <TextView
         android:layout_width="30sp"
-        android:layout_height="50sp"
-        android:background="#fff700"
-        android:text="문"
+        android:layout_height="80sp"
+        android:background="@color/frenchblue"
+        android:text="출입구"
         android:textColor="#000000"
-        android:textSize="30sp"
+        android:textSize="20sp"
+        android:layout_marginLeft="5dp"
         android:layout_centerVertical="true"
         android:layout_alignRight="@+id/center"
         android:layout_alignEnd="@+id/center"
@@ -125,8 +115,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="30sp"
-                android:text="예상 대기 인원 "
+                android:text="화장실 내 혼잡도 : "
                 android:layout_marginLeft="20dp" />
+            <TextView
+                android:id="@+id/wait"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="30dp"
+                android:text=""/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -142,9 +138,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="30sp"
-                android:text="화장실 만족지수"
+                android:text="화장실 만족지수 : "
                 android:layout_marginBottom="10dp"
                 android:layout_marginLeft="20dp"/>
+            <TextView
+                android:id="@+id/sati"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="30dp"
+                android:text=""/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -159,6 +161,7 @@
                 />
 
             <ImageView
+                android:layout_marginTop="5dp"
                 android:id="@+id/click"
                 android:layout_width="30dp"
                 android:layout_height="30dp"

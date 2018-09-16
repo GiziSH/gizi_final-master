@@ -1,4 +1,37 @@
 <resources>
     <string name="app_name">기지발휘</string>
+    <color name="marinegreen">#6D7973</color>
+    <color name="pinkhorizon">#E7BAA0</color>
+    <color name="sandsurge">#E5DACE</color>
+    <color name="melon">#FDAE84</color>
+    <color name="borabora">#8BCBC8</color>
+    <color name="icing">#DAE9E4</color>
+    <color name="Tropicalpink">#F5AB99</color>
+    <color name="liquidsunset">#FEB47B</color>
+    <color name="heatwave">#FF7E5F</color>
+    <color name="cunmetal">#3E3E3B</color>
+    <color name="pinksalt">#FAF3D9</color>
+    <color name="rosada">#FFB6B9</color>
+    <color name="bounty">#4BBCF4</color>
 
+    <color name="glass">#EDFAFD</color>
+    <color name="Chill">#AED9DA</color>
+    <color name="californancoral">#3DDAD7</color>
+    <color name="bondibule">#2A93D5</color>
+    <color name="marina">#135589</color>
+
+    <color name="cashmere">#CBC5C1</color>
+    <color name="frenchblue">#A2AAB0</color>
+    <color name="whitewash">#EBECED</color>
+
+    <color name="chiffon">#F8F3E6</color>
+    <color name="vanilla">#E7CC8F</color>
+    <color name="buttercup">#EFAA52</color>
+    <color name="rust">#AB3e16</color>
+    <color name="mahogany">#48120E</color>
+
+    <color name="charcoal">#36384C</color>
+    <color name="petal">#E2BAB3</color>
+    <color name="cream">#E9DCCD</color>
+    <color name="fresh">#849974</color>
 </resources>
