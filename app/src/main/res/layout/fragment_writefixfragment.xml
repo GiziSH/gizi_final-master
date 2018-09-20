@@ -1,22 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    >
 
     <TextView
+        android:id="@+id/center"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_centerInParent="true"
+        android:background="@color/Chill"
+        android:text=""
+        android:textColor="#ffffff"
+        android:textSize="150sp"/>
+    <TextView
+        android:id="@+id/tv_writefix"
+        android:textColor="@color/cunmetal"
         android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:text = "민원게시물 수정"
-        android:textSize="35dp"
-        android:textStyle="bold"/>
+        android:layout_height="wrap_content"
+        android:textSize="30dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:text="민원게시물 수정"
+        android:textStyle="bold"
+        />
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginTop="70dp">
 
-        <TextView
+
+    <TextView
             android:layout_width="wrap_content"
             android:layout_height="35dp"
             android:layout_marginLeft="30dp"
@@ -38,7 +57,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginTop="120dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -63,7 +83,7 @@
         android:layout_width="60dp"
         android:layout_height="35dp"
         android:layout_marginLeft="30dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="200dp"
         android:text="내   용"
         android:textSize="20dp" />
 
@@ -72,14 +92,15 @@
         android:layout_width="330dp"
         android:layout_height="190dp"
         android:layout_marginLeft="15dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="250dp"
         android:background="@drawable/border"
         android:textColor="@android:color/black"
         android:textSize="20dp" />
 
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="500dp">
 
         <Button
             android:layout_width="wrap_content"
@@ -97,4 +118,4 @@
             android:text="취소"
             android:id="@+id/cancelbutton"/>
     </LinearLayout>
-</LinearLayout>
+</FrameLayout>

@@ -1,3 +1,6 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="fill_parent"
+    android:layout_width="fill_parent" >
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -13,8 +16,8 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:layout_marginTop="15dp"
-        android:textSize="30sp"
-        android:text="현재 화장실의 상태\n*남자화장실의 경우,\n 소변기의 상태는 제외"
+        android:textSize="15sp"
+        android:text="남자화장실의 경우,소변기의 상태는 제외됩니다."
 
         android:layout_centerHorizontal="true" />
 
@@ -22,7 +25,8 @@
         android:id="@+id/center"
         android:layout_width="300sp"
         android:layout_height="210sp"
-        android:layout_centerInParent="true"
+        android:layout_marginTop="70dp"
+        android:layout_marginLeft="15dp"
         android:background="@color/whitewash"
         android:text=""
         android:textColor="#ffffff"
@@ -86,13 +90,12 @@
         android:layout_width="30sp"
         android:layout_height="80sp"
         android:background="@color/frenchblue"
-        android:text="출입구"
+        android:text="출\n입\n구"
         android:textColor="#000000"
         android:textSize="20sp"
         android:layout_marginLeft="5dp"
-        android:layout_centerVertical="true"
         android:layout_alignRight="@+id/center"
-        android:layout_alignEnd="@+id/center"
+        android:layout_marginTop="140dp"
         android:id="@+id/door" />
 
 
@@ -100,7 +103,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="430dp"
+        android:layout_marginTop="350dp"
         android:layout_marginLeft="30dp">
         <LinearLayout
             android:layout_width="match_parent"
@@ -127,7 +130,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp">
+            android:layout_marginTop="70dp">
             <ImageView
                 android:id="@+id/imageView2"
                 android:layout_width="30sp"
@@ -151,7 +154,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="100dp">
+            android:layout_marginTop="130dp">
             <TextView
                 android:id="@+id/textView9"
                 android:layout_width="wrap_content"
@@ -193,3 +196,4 @@
 
 
 </RelativeLayout>
+</ScrollView>

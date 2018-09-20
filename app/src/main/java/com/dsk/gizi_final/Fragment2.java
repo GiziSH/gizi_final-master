@@ -34,9 +34,6 @@ import java.util.List;
  * A simple {@link Fragment} subclass.
  */
 public class Fragment2 extends Fragment {
-    Typeface BMhanna;
-
-
     ImageButton mBtn;
     Button deleteBtn;
     private List<String> list_names;
@@ -54,10 +51,6 @@ public class Fragment2 extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_fragment2, container, false);
-        BMhanna = Typeface.createFromAsset(getContext().getAssets(),"bmhanna_11yrs_ttf.ttf");
-
-        TextView tv_recentsearch = (TextView) v.findViewById(R.id.tv_recentsearch);
-        tv_recentsearch.setTypeface(BMhanna);
 
         pref = getActivity().getSharedPreferences("pref",getActivity().MODE_PRIVATE);
         editor = pref.edit();

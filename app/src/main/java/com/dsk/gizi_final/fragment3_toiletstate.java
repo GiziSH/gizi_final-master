@@ -3,6 +3,7 @@ package com.dsk.gizi_final;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -47,6 +48,7 @@ public class fragment3_toiletstate extends Fragment {
     private TextView text_sati;
     private TextView text_cong;
     private String Tnames; //어느 화장실인가
+    private String Tcomplain;
     private static final String TAG_sati = "$result";
 
     //팝업창
@@ -73,10 +75,8 @@ public class fragment3_toiletstate extends Fragment {
         View v = inflater.inflate(R.layout.fragment3_toiletstate, container, false);
         mTextViewResult = (TextView)v.findViewById(R.id.textView_main_result);
         fragment3_toiletstate.GetData task = new fragment3_toiletstate.GetData();
-        //task.execute("http://192.168.200.199/gizitest.php");
-        task.execute("http://172.17.108.227/gizitest.php");
-
-
+        task.execute("http://192.168.200.199/gizitest.php");
+        //task.execute("http://172.17.108.227/gizitest.php");
 
         //팝업창 부분~
         final int[] selectedItem = {0};
@@ -103,8 +103,8 @@ public class fragment3_toiletstate extends Fragment {
                                         , "응해주셔서 감사합니다."
                                         , Toast.LENGTH_SHORT).show();
                                 updatecntDB cntDB = new updatecntDB();
-                                //cntDB.execute("http://192.168.200.199/update_allcnt.php");
-                                cntDB.execute("http://172.17.108.227/update_allcnt.php");
+                                cntDB.execute("http://192.168.200.199/update_allcnt.php");
+                                //cntDB.execute("http://172.17.108.227/update_allcnt.php");
 
                                 if (items[selectedItem[0]]=="불만족"){
                                     final String[] items = new String[]{"변기가 막힘","너무 지저분함","휴지가 없음","기타"};
@@ -114,12 +114,22 @@ public class fragment3_toiletstate extends Fragment {
                                                 @Override
                                                 public void onClick(DialogInterface dialog, int which) {
                                                     selectedItem[0] = which;
+
                                                 }
                                             })
                                             .setPositiveButton("확인", new DialogInterface.OnClickListener() {
                                                 @Override
                                                 public void onClick(DialogInterface dialog, int which) {
-                                                    //페이지 넘기기
+                                                    Log.e("불만족", items[selectedItem[0]]);
+                                                    switch (items[selectedItem[0]]){
+                                                        case "변기가 막힘": Tcomplain= new String("0"); break;
+                                                        case "너무 지저분함":Tcomplain= new String("1");break;
+                                                        case "휴지가 없음":Tcomplain= new String("2");break;
+                                                        case "기타":Tcomplain= new String("3");break;
+                                                    }
+                                                    updateCP_DB CP = new updateCP_DB();
+                                                    CP.execute("http://192.168.200.199/update_complain.php");
+
                                                 }
                                             })
                                             .setNegativeButton("취소", new DialogInterface.OnClickListener() {
@@ -136,8 +146,8 @@ public class fragment3_toiletstate extends Fragment {
 
                                 } else { //만족일 경우
                                     updatecntDB goodcntDB = new updatecntDB();
-                                    //goodcntDB.execute("http://192.168.200.199/update_goodcnt.php");
-                                    goodcntDB.execute("http://172.17.108.227/update_goodcnt.php");
+                                    goodcntDB.execute("http://192.168.200.199/update_goodcnt.php");
+                                    //goodcntDB.execute("http://172.17.108.227/update_goodcnt.php");
 
                                 }
                             }
@@ -155,14 +165,14 @@ public class fragment3_toiletstate extends Fragment {
             }
         });
         satiDB satisati = new satiDB();
-        //satisati.execute("http://192.168.200.199/select_sati.php");
-        satisati.execute("http://172.17.108.227/select_sati.php");
+        satisati.execute("http://192.168.200.199/select_sati.php");
+        //satisati.execute("http://172.17.108.227/select_sati.php");
 
         text_sati = (TextView)v.findViewById(R.id.sati); //만족도
 
         GetCong task1 = new GetCong();
-        //task1.execute("http://192.168.200.199/select_congestion.php");
-        task1.execute("http://172.17.108.227/select_congestion.php");
+        task1.execute("http://192.168.200.199/select_congestion.php");
+        //task1.execute("http://172.17.108.227/select_congestion.php");
         text_cong = (TextView)v.findViewById(R.id.wait); //혼잡도
 
 
@@ -459,6 +469,65 @@ public class fragment3_toiletstate extends Fragment {
         }
     }
 
+    public class updateCP_DB extends AsyncTask<String, Integer, String> {
+        String data = "";
+
+        @Override
+        protected String doInBackground(String... params) {
+
+            /* 인풋 파라메터값 생성 */
+            String param = "t_name=" + Tnames + "&t_complain"+ Tcomplain+ "";
+            Log.e("파라메터값", param);
+            String serverURL = params[0];
+            try {
+                /* 서버연결 */
+                URL url = new URL(serverURL);
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                conn.setRequestMethod("POST");
+                conn.setDoInput(true);
+                conn.connect();
+
+                /* 안드로이드 -> 서버 파라메터값 전달 */
+                OutputStream outs = conn.getOutputStream();
+                outs.write(param.getBytes("UTF-8"));
+                outs.flush();
+                outs.close();
+
+                /* 서버 -> 안드로이드 파라메터값 전달 */
+                InputStream is = null;
+                BufferedReader in = null;
+
+
+                is = conn.getInputStream();
+                in = new BufferedReader(new InputStreamReader(is), 8 * 1024);
+                String line = null;
+                StringBuffer buff = new StringBuffer();
+                while ((line = in.readLine()) != null) {
+                    buff.append(line + "\n");
+                }
+                data = buff.toString().trim();
+                Log.e("컴플레인 all", data);
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return data;
+        }
+
+        @Override
+        protected void onPostExecute(String data) {
+            super.onPostExecute(data);
+            /* 서버에서 응답 */
+            Log.e("만족도 all", data);
+
+        }
+    }
+
+
     private class GetCong extends AsyncTask<String, Void, String> {
         ProgressDialog progressDialog;
         String data = "";
@@ -576,4 +645,5 @@ public class fragment3_toiletstate extends Fragment {
         }
 
     }
+
 }

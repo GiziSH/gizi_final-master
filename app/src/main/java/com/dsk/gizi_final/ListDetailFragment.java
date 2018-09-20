@@ -3,6 +3,7 @@ package com.dsk.gizi_final;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -43,6 +44,7 @@ public class ListDetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_listdetailfragment, container, false);
+
         num = getArguments().getString("num");
         title = getArguments().getString("title");
         author = getArguments().getString("author");
@@ -99,7 +101,6 @@ public class ListDetailFragment extends Fragment {
                 DeleteFragment deleteFragment = new DeleteFragment();
                 android.support.v4.app.FragmentTransaction fragmenttransaction = getFragmentManager().beginTransaction();
                 fragmenttransaction.replace(R.id.fragment_container, deleteFragment);
-                fragmenttransaction.addToBackStack(null);
                 fragmenttransaction.commit();
             }
         });
@@ -110,7 +111,6 @@ public class ListDetailFragment extends Fragment {
                 Fragment4 fragment4 = new Fragment4();
                 android.support.v4.app.FragmentTransaction fragmenttransaction = getFragmentManager().beginTransaction();
                 fragmenttransaction.replace(R.id.fragment_container, fragment4);
-                fragmenttransaction.addToBackStack(null);
                 fragmenttransaction.commit();
             }
         });
@@ -136,7 +136,6 @@ public class ListDetailFragment extends Fragment {
             progressDialog.dismiss();
             //mTextViewResult.setText(result);
             Log.d(TAG, "result  - " + result);
-            Log.e("뭘까",data);
 
             if(data.equals("1")) {
                 Bundle bundle = new Bundle();
@@ -149,7 +148,6 @@ public class ListDetailFragment extends Fragment {
                 writeFixFragment.setArguments(bundle);
                 android.support.v4.app.FragmentTransaction fragmenttransaction = getFragmentManager().beginTransaction();
                 fragmenttransaction.replace(R.id.fragment_container, writeFixFragment);
-                fragmenttransaction.addToBackStack(null);
                 fragmenttransaction.commit();
             }
         }
@@ -163,7 +161,7 @@ public class ListDetailFragment extends Fragment {
             try {
                 /* 서버연결 */
                 URL url = new URL(
-                        "http://192.168.219.109/get_password.php");
+                        "http://192.168.200.199/get_password.php");
                 //URL url = new URL(serverURL);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");

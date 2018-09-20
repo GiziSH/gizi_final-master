@@ -81,12 +81,12 @@ public class fragment3_option extends Fragment {
         });
 
         GetSati task = new GetSati();
-        //task.execute("http://192.168.200.199/select_sati.php");
-        task.execute("http://172.17.108.227/select_sati.php");
+        task.execute("http://192.168.200.199/select_sati.php");
+        //task.execute("http://172.17.108.227/select_sati.php");
 
         GetCong task1 = new GetCong();
-        //task1.execute("http://192.168.200.199/select_congestion.php");
-        task1.execute("http://172.17.108.227/select_congestion.php");
+        task1.execute("http://192.168.200.199/select_congestion.php");
+        //task1.execute("http://172.17.108.227/select_congestion.php");
 
         text_sati = (TextView)v.findViewById(R.id.sati); //만족도
         text_cong = (TextView)v.findViewById(R.id.wait); //혼잡도

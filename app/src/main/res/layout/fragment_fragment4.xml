@@ -37,36 +37,51 @@
         android:background="#00000000"
         android:textSize="20dp"
         android:text="글쓰기" />
-
-
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="50dp">
+        android:layout_marginTop="48dp">
 
-        <TextView
-            android:layout_width="30dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:text="번호"/>
-        <TextView
-            android:layout_width="60dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
-            android:text="제목"/>
-        <TextView
-            android:layout_width="60dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:text="작성자"/>
-        <TextView
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:text="작성 시간"/>
-
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="7dp"
+        android:textSize="20dp"
+        android:textColor="@color/charcoal"
+        android:text="번호"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:textSize="23dp"
+        android:textColor="@color/charcoal"
+        android:text="제목"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="50dp"
+        android:textColor="@color/charcoal"
+        android:textSize="20dp"
+        android:text="작성자"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="80dp"
+        android:textColor="@color/charcoal"
+        android:textSize="20dp"
+        android:text="작성시간"
+        />
     </LinearLayout>
+
+
+    <View
+        android:layout_marginTop="75dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#000000"/>
     <LinearLayout
         android:layout_marginTop="70dp"
         android:layout_width="wrap_content"

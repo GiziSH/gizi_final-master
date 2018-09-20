@@ -2,6 +2,7 @@ package com.dsk.gizi_final;
 
 
 import android.app.ProgressDialog;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -24,6 +25,7 @@ import java.net.URL;
 import java.util.ArrayList;
 
 public class FinalConfirm extends Fragment{
+
     private static String TAG = "phptest_MainActivity";
     private static final String TAG_JSON="webnautes";
     private static final String TAG_NUM = "num";
@@ -47,7 +49,8 @@ public class FinalConfirm extends Fragment{
         contentView = (TextView) v.findViewById(R.id.contentview);
 
         GetData task = new GetData();
-        task.execute("http://192.168.219.109/board_confirm.php");
+        //task.execute("http://172.17.108.227/board_confirm.php");
+        task.execute("http://192.168.200.199/board_confirm.php");
 
         btn_commit = (Button) v.findViewById(R.id.commitbutton);
         btn_commit.setOnClickListener(new View.OnClickListener() {
@@ -56,6 +59,7 @@ public class FinalConfirm extends Fragment{
                 Fragment4 fragment4 = new Fragment4();
                 android.support.v4.app.FragmentTransaction fragmenttransaction = getFragmentManager().beginTransaction();
                 fragmenttransaction.replace(R.id.fragment_container, fragment4);
+                fragmenttransaction.addToBackStack(null);
                 fragmenttransaction.commit();
 
             }

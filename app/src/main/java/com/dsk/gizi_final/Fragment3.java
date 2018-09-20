@@ -50,8 +50,6 @@ import static android.content.Context.MODE_PRIVATE;
  * A simple {@link Fragment} subclass.
  */
 public class Fragment3 extends Fragment  {
-    Typeface BMhanna;
-
     private static String TAG = "phptest_MainActivity";
     private static final String TAG_JSON="webnautes";
     private static final String TAG_name = "name";
@@ -93,7 +91,6 @@ public class Fragment3 extends Fragment  {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_fragment3, container, false);
-        BMhanna = Typeface.createFromAsset(getContext().getAssets(),"bmhanna_11yrs_ttf.ttf");
 
         mTextViewResult = (TextView)v.findViewById(R.id.textView_main_result);
         //즐겨찾기
@@ -103,14 +100,12 @@ public class Fragment3 extends Fragment  {
         pref1 = getContext().getSharedPreferences("pref1",MODE_PRIVATE);
         editor1 = pref1.edit();
         list_bookmark  = new ArrayList<>();
-        //madapter.checkbookmark();
+
         Toilet toilet = new Toilet();
 
 
         mArrayList = new ArrayList<>();
         mArrayList2 = new ArrayList<>();
-        //GetData task = new GetData();
-        //task.execute("http://192.168.0.7/searchtest.php");
 
 
 //
@@ -138,24 +133,20 @@ public class Fragment3 extends Fragment  {
 
                         madapter.deletetoilet();
 
-                        //task.execute("http://192.168.200.199/subway_search.php");
                         SRname = "subway";
                         GetData task = new GetData();
-                        //task.execute("http://192.168.200.199/select_toilet.php");
-                        task.execute("http://172.17.108.227/select_toilet.php");
-
-                        //fragment3_option.SRname(SRname);
+                        task.execute("http://192.168.200.199/select_toilet.php");
+                        //task.execute("http://172.17.108.227/select_toilet.php");
 
                         break;
                     case 2:
 
                         madapter.deletetoilet();
 
-                        //task2.execute("http://192.168.200.199/restarea_search.php");
                         SRname = "restarea";
                         GetData task2 = new GetData();
-                        //task2.execute("http://192.168.200.199/select_toilet.php");
-                        task2.execute("http://172.17.108.227/select_toilet.php");
+                        task2.execute("http://192.168.200.199/select_toilet.php");
+                        //task2.execute("http://172.17.108.227/select_toilet.php");
                         break;
                 }
             }
@@ -463,7 +454,7 @@ public class Fragment3 extends Fragment  {
 
 
 
-    //화장실 검색하기
+/*    //화장실 검색하기
     public void search(String charText){
 
 
@@ -500,7 +491,7 @@ public class Fragment3 extends Fragment  {
         mlistView.setAdapter(madapter);
 
     }
-
+*/
 
 
 

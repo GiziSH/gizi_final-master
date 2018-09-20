@@ -51,7 +51,6 @@ import java.util.List;
  * A simple {@link Fragment} subclass.
  */
 public class Fragment1 extends Fragment {
-    Typeface BMhanna;
 
     private static String TAG = "phptest_MainActivity";
     private static final String TAG_JSON = "webnautes";
@@ -79,10 +78,7 @@ public class Fragment1 extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_fragment1, container, false);
-        BMhanna = Typeface.createFromAsset(getContext().getAssets(),"bmhanna_11yrs_ttf.ttf");
 
-        TextView tv_bookmark = (TextView) v.findViewById(R.id.tv_bookmark);
-        tv_bookmark.setTypeface(BMhanna);
         //pref1 = getActivity().getSharedPreferences("pref1", getActivity().MODE_PRIVATE);
         //editor1 = pref1.edit();
 
@@ -91,9 +87,9 @@ public class Fragment1 extends Fragment {
         TextView tx = (TextView) v.findViewById(R.id.empty2_text);
         bm_listview.setEmptyView(tx);
         bookmarkDB bmDB = new bookmarkDB();
-        //bmDB.execute("http://192.168.200.199/select_bookmark.php");
+        bmDB.execute("http://192.168.200.199/select_bookmark.php");
         //bmDB.execute("http://192.168.0.15/select_bookmark.php"); //티아모
-        bmDB.execute("http://172.17.108.227/select_bookmark.php"); //1공
+        //bmDB.execute("http://172.17.108.227/select_bookmark.php"); //1공
 
 
 
@@ -138,16 +134,16 @@ public class Fragment1 extends Fragment {
                                     if (checkedItems.get(i)) {
                                         Tnames=new String(list_bookmark.get(i));
 
-                                        Ubm = new updatebmDB();
-                                        Ubm.execute();
+                                        //Ubm = new updatebmDB();
+                                       // Ubm.execute();
                                     }
 
 
                                 }
 
-                                bookmarkDB bmDB = new bookmarkDB();
-                                //bmDB.execute("http://192.168.200.199/select_bookmark.php");
-                                bmDB.execute("http://172.17.108.227/select_bookmark.php");
+                                bookmarkDB bmDB2 = new bookmarkDB();
+                                bmDB2.execute("http://192.168.200.199/select_bookmark.php");
+                                //bmDB.execute("http://172.17.108.227/select_bookmark.php");
 
                                 break;
                             case R.id.popup_allselect:
@@ -290,9 +286,9 @@ public class Fragment1 extends Fragment {
 
             }
 
-            ArrayAdapter<String> bmadapter = new ArrayAdapter<String>(getActivity(),R.layout.simple_list,list_bookmark);
+            //ArrayAdapter<String> bmadapter = new ArrayAdapter<String>(getActivity(),R.layout.simple_list,list_bookmark);
 
-            bm_listview.setAdapter(bmadapter);
+            //bm_listview.setAdapter(bmadapter);
 
         } catch (JSONException e) {
 
@@ -311,8 +307,8 @@ public class Fragment1 extends Fragment {
             String param = "t_name=" +Tnames + "";
             try {//
                 /* 서버연결 */
-                //URL url = new URL("http://192.168.200.199/update_bookmark.php");
-                URL url = new URL("http://172.17.108.227/update_bookmark.php");
+                URL url = new URL("http://192.168.200.199/update_bookmark.php");
+                //URL url = new URL("http://172.17.108.227/update_bookmark.php");
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
                 conn.setRequestMethod("POST");

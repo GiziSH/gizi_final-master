@@ -116,7 +116,7 @@ public class F5_signin extends Fragment {
             try {
                 /* 서버연결 */
                 URL url = new URL(
-                        "http://192.168.0.49/gizi_signin.php");
+                        "http://192.168.200.199/gizi_signin.php");
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
                 conn.setRequestMethod("POST");

@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -15,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -32,6 +34,7 @@ public class WriteFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_writefragment, container, false);
+
         et_name = (EditText) v.findViewById(R.id.editname);
         et_title = (EditText) v.findViewById(R.id.edittitle);
         et_content = (EditText) v.findViewById(R.id.editcontent);
@@ -48,7 +51,7 @@ public class WriteFragment extends Fragment {
                 spassword = et_password.getText().toString();
 
                 saveDB save = new saveDB();
-                save.execute("http://192.168.219.109/board_insert.php");
+                save.execute("http://192.168.200.199/board_insert.php");
                 WriteConfirmFragment writeConfirmFragment = new WriteConfirmFragment();
                 android.support.v4.app.FragmentTransaction fragmenttransaction = getFragmentManager().beginTransaction();
                 fragmenttransaction.replace(R.id.fragment_container, writeConfirmFragment);

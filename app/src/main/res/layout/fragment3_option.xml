@@ -8,7 +8,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="40dp"
         android:textSize="30dp"
         android:textStyle="bold"
         android:text="성별을 선택해주세요!" />
@@ -22,7 +22,7 @@
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:layout_gravity="center"
-            android:layout_marginLeft="35dp"
+            android:layout_marginLeft="15dp"
             android:background="@drawable/imgbtn_states"
             android:src="@drawable/imgbtn_boy_icons" />
 

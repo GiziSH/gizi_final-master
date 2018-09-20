@@ -1,6 +1,7 @@
 package com.dsk.gizi_final;
 
 import android.app.ProgressDialog;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -44,7 +45,7 @@ public class WriteConfirmFragment extends Fragment {
         contentView = (TextView) v.findViewById(R.id.contentview);
 
         GetData task = new GetData();
-        task.execute("http://192.168.219.109/recent_getjson.php");
+        task.execute("http://192.168.200.199/recent_getjson.php");
 
         btn_fix = (Button) v.findViewById(R.id.fixbutton);
         btn_delete = (Button) v.findViewById(R.id.deletebutton);
