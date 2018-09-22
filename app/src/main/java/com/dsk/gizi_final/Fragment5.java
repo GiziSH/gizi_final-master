@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -153,10 +154,7 @@ public class Fragment5 extends Fragment {
                                 fragmentTransaction.replace(R.id.fragment_container, f5signin);
                                 fragmentTransaction.addToBackStack(null);
                                 fragmentTransaction.commit();
-                                /*
-                                Intent intent = new Intent(MainActivity.this, MainActivity.class);
-                                startActivity(intent);
-                                finish();*/
+
                             }
                         });
                 AlertDialog dialog = alertBuilder.create();
@@ -289,7 +287,11 @@ public class Fragment5 extends Fragment {
                         .setPositiveButton("확인", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                //finish();
+                                Fragment6 fragment6 = new Fragment6();
+                                android.support.v4.app.FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                                fragmentTransaction.replace(R.id.fragment_container, fragment6);
+                                fragmentTransaction.addToBackStack(null);
+                                fragmentTransaction.commit();
                             }
                         });
                 AlertDialog dialog = alertBuilder.create();

@@ -66,11 +66,6 @@ public class Fragment3 extends Fragment  {
     private ArrayList<Toilet> toilets;
     private ToiletAdapter madapter;
     private int[] img = {R.drawable.search};
-    private List<String> list_bookmark;
-    private SharedPreferences pref1;
-    private SharedPreferences.Editor editor1;
-
-
 
     //검색 선택
     private Spinner MySpinner1;
@@ -96,10 +91,8 @@ public class Fragment3 extends Fragment  {
         //즐겨찾기
         mlistView = (ListView) v.findViewById(R.id.listView);
         setListViewAdapter();
-        //setAdapterData();
-        pref1 = getContext().getSharedPreferences("pref1",MODE_PRIVATE);
-        editor1 = pref1.edit();
-        list_bookmark  = new ArrayList<>();
+
+
 
         Toilet toilet = new Toilet();
 
@@ -107,8 +100,6 @@ public class Fragment3 extends Fragment  {
         mArrayList = new ArrayList<>();
         mArrayList2 = new ArrayList<>();
 
-
-//
         // 지하철역,휴게소 선택
         String [] values1 = {"선택","지하철역","휴게소"};
         MySpinner1 = (Spinner)v.findViewById(R.id.option);
@@ -214,69 +205,6 @@ public class Fragment3 extends Fragment  {
         madapter = new ToiletAdapter(this.getActivity(), R.layout.row_listview, toilets);
         mlistView.setAdapter(madapter);
     }
-
-    //즐겨찾기
-    /*
-    //배열안에 집어넣기
-    public void addbookmark(String value) {
-
-        String str1 = new String();
-
-        for(int i =0; i<list_bookmark.size(); i++){//중복검사
-            str1 = list_bookmark.get(i);
-            if (str1.equals(value)){
-                list_bookmark.remove(value);
-                list_bookmark.add(value);
-                return;
-            }
-        }
-        list_bookmark.add(value);
-    }
-    //배열에서 제거
-    public void deletebookmark(String value) {
-
-        String str1 = new String();
-
-        for(int i =0; i<list_bookmark.size(); i++){//중복검사
-            str1 = list_bookmark.get(i);
-            if (str1.equals(value)){
-                list_bookmark.remove(value);
-                return;
-            }
-        }
-    }
-    //내부메모리에 저장
-    public void savebookmark(){
-        JSONArray array = new JSONArray();
-        for(int i=0; i<list_bookmark.size();i++){
-            array.put(list_bookmark.get(i));
-        }
-        String a = array.toString();
-
-        editor1.putString("bookmark", a);
-        editor1.commit();
-    }
-    //내부메모리에서 불러오기
-    public void showbookmark(){
-        String json = pref1.getString("bookmark", null);
-        if (json != null){
-            try{
-                JSONArray array = new JSONArray(json);
-                list_bookmark.clear();
-
-                for(int i = array.length() - 1; i>=0;i--){
-                    String url = array.optString(i);
-                    list_bookmark.add(url);
-                }
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-    */
-
-
 
     // 최근검색
     //배열안에 집어넣기
@@ -450,52 +378,5 @@ public class Fragment3 extends Fragment  {
         }
 
     }
-
-
-
-
-/*    //화장실 검색하기
-    public void search(String charText){
-
-
-        // 어댑터 없을 때 리스트 두개로 검색하기 방법
-        Pattern p = Pattern.compile("^[a-zA-Z가-힣]*$");
-        Matcher m = p.matcher(charText);
-
-        mArrayList2.clear();
-
-        if (charText.length() == 0) {
-            mArrayList2.addAll(mArrayList);
-        }
-        else {
-            for (int i=0; i<mArrayList.size();i++){
-                String str = mArrayList.get(i).get("name");
-
-
-
-                if (str.toLowerCase().contains(charText)) {
-
-                    mArrayList2.add(mArrayList.get(i));
-                }
-            }
-        }
-
-
-        ListAdapter madapter = new SimpleAdapter(
-                getContext(), mArrayList2, R.layout.row_listview,
-                new String[]{TAG_name,TAG_line},
-                new int[]{R.id.toiletname, R.id.toiletline}
-
-        );
-
-        mlistView.setAdapter(madapter);
-
-    }
-*/
-
-
-
-
-
 
 }

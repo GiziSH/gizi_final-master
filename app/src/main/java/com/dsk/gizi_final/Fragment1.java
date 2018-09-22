@@ -65,8 +65,6 @@ public class Fragment1 extends Fragment {
     String Tnames;
 
     private List<String> list_bookmark;
-    private SharedPreferences pref1;
-    private SharedPreferences.Editor editor1;
     ListView bm_listview;
 
     public Fragment1() {

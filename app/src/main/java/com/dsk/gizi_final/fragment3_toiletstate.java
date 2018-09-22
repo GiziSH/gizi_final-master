@@ -29,6 +29,16 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.widget.LinearLayout;
+
+import org.achartengine.ChartFactory;
+import org.achartengine.GraphicalView;
+import org.achartengine.model.CategorySeries;
+import org.achartengine.renderer.DefaultRenderer;
+import org.achartengine.renderer.SimpleSeriesRenderer;
 
 /**
  * Created by suhyun on 2018-07-08.
@@ -50,6 +60,30 @@ public class fragment3_toiletstate extends Fragment {
     private String Tnames; //어느 화장실인가
     private String Tcomplain;
     private static final String TAG_sati = "$result";
+
+    //파이차트
+    int[] pieChartValues = {10, 10, 20, 20, 40};  //각 계열(Series)의 값
+
+
+    public static final String TYPE = "type";
+
+    //각 계열(Series)의 색상
+
+    private static int[] COLORS = new int[]{Color.YELLOW, Color.GREEN, Color.BLUE, Color.MAGENTA, Color.CYAN};
+
+
+    //각 계열의 타이틀
+
+    String[] mSeriesTitle = new String[] {"PIE1", "PIE2", "PIE3", "PIE4", "PIE5" };
+
+
+    private CategorySeries mSeries = new CategorySeries("계열");
+
+    private DefaultRenderer mRenderer = new DefaultRenderer();
+
+    private GraphicalView mChartView;
+
+
 
     //팝업창
     private ImageView showDialog;
@@ -73,6 +107,46 @@ public class fragment3_toiletstate extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment3_toiletstate, container, false);
+
+        mRenderer.setApplyBackgroundColor(true);
+
+        mRenderer.setBackgroundColor(Color.argb(100, 50, 50, 50));
+
+        mRenderer.setChartTitleTextSize(20);
+
+        mRenderer.setLabelsTextSize(30);
+
+        mRenderer.setLegendTextSize(30);
+
+        mRenderer.setMargins(new int[]{20, 30, 15, 0});
+
+        mRenderer.setZoomButtonsVisible(true);
+
+        mRenderer.setStartAngle(90);
+
+
+        if (mChartView == null) {
+
+            LinearLayout layout = (LinearLayout)v.findViewById(R.id.chart_pie);
+
+            mChartView = ChartFactory.getPieChartView(getContext(), mSeries, mRenderer);
+
+            mRenderer.setClickEnabled(true);
+
+            mRenderer.setSelectableBuffer(10);
+
+            layout.addView(mChartView, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT,
+
+                    LinearLayout.LayoutParams.FILL_PARENT));
+
+        } else {
+
+            mChartView.repaint();
+
+        }
+
+        fillPieChart();
+
         mTextViewResult = (TextView)v.findViewById(R.id.textView_main_result);
         fragment3_toiletstate.GetData task = new fragment3_toiletstate.GetData();
         task.execute("http://192.168.200.199/gizitest.php");
@@ -177,6 +251,30 @@ public class fragment3_toiletstate extends Fragment {
 
 
         return v;
+    }
+    public void fillPieChart() {
+
+        for (int i = 0; i < pieChartValues.length; i++) {
+
+            mSeries.add(mSeriesTitle[i] + "_" + (String.valueOf(pieChartValues[i])), pieChartValues[i]);
+
+
+            //Chart에서 사용할 값, 색깔, 텍스트등을 DefaultRenderer객체에 설정
+
+            SimpleSeriesRenderer renderer = new SimpleSeriesRenderer();
+
+            renderer.setColor(COLORS[(mSeries.getItemCount() - 1) % COLORS.length]);
+
+
+            mRenderer.addSeriesRenderer(renderer);
+
+
+            if (mChartView != null)
+
+                mChartView.repaint();
+
+        }
+
     }
     private class GetData extends AsyncTask<String, Void, String> {
         ProgressDialog progressDialog;
@@ -526,7 +624,6 @@ public class fragment3_toiletstate extends Fragment {
 
         }
     }
-
 
     private class GetCong extends AsyncTask<String, Void, String> {
         ProgressDialog progressDialog;
