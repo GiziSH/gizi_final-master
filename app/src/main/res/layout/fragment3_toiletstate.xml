@@ -1,13 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_width="match_parent" >
+    >
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <!-- TODO: Update blank fragment layout -->
+    android:layout_height="wrap_content">
 
 
     <TextView
@@ -20,7 +21,6 @@
         android:text="남자화장실의 경우,소변기의 상태는 제외됩니다."
 
         android:layout_centerHorizontal="true" />
-
     <TextView
         android:id="@+id/center"
         android:layout_width="300sp"
@@ -83,9 +83,6 @@
         android:layout_alignBottom="@id/center"
         android:layout_alignRight="@id/center"
         />
-
-
-
     <TextView
         android:layout_width="30sp"
         android:layout_height="80sp"
@@ -98,13 +95,12 @@
         android:layout_marginTop="140dp"
         android:id="@+id/door" />
 
-
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="350dp"
-        android:layout_marginLeft="30dp">
+        android:layout_marginLeft="30dp"
+        >
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -154,7 +150,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="130dp">
+            android:layout_marginTop="130dp"
+            android:id="@+id/linear">
             <TextView
                 android:id="@+id/textView9"
                 android:layout_width="wrap_content"
@@ -171,40 +168,24 @@
                 app:srcCompat="@drawable/click"
                 android:layout_marginLeft="20dp" />
         </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="180dp">
+            <com.github.mikephil.charting.charts.PieChart
+                android:layout_width="300dp"
+                android:layout_height="300dp"
+                android:id="@+id/piechart"
+                >
+
+            </com.github.mikephil.charting.charts.PieChart>
+        </LinearLayout>
+
     </RelativeLayout>
 
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-
-        android:orientation="vertical" android:layout_width="fill_parent"
-
-        android:layout_height="fill_parent">
 
 
-        <LinearLayout android:id="@+id/chart_pie" android:orientation="horizontal"
-
-            android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_weight="1" />
-
-
-    </LinearLayout>
-
-
-
-
-
-
-
-
-
-
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="4"
-        android:layout_margin="5dp"
-        android:padding="5dp"
-        android:id="@+id/textView_main_result" />
 
 
 </RelativeLayout>

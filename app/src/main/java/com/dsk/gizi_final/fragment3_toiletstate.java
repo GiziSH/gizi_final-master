@@ -13,9 +13,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.achartengine.chart.PieChart;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -28,17 +30,20 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
-import android.graphics.Color;
-import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.widget.LinearLayout;
 
-import org.achartengine.ChartFactory;
-import org.achartengine.GraphicalView;
-import org.achartengine.model.CategorySeries;
-import org.achartengine.renderer.DefaultRenderer;
-import org.achartengine.renderer.SimpleSeriesRenderer;
+import com.github.mikephil.charting.animation.Easing;
+import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.PercentFormatter;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
+import com.github.mikephil.charting.utils.ColorTemplate;
 
 /**
  * Created by suhyun on 2018-07-08.
@@ -53,6 +58,15 @@ public class fragment3_toiletstate extends Fragment {
     private static final String TAG_state = "state";
     private static final String TAG_cong = "$result";
 
+    private static final String TAG_selected0 = "$selected0";
+    private static final String TAG_selected1 = "$selected1";
+    private static final String TAG_selected2 = "$selected2";
+    private static final String TAG_selected3 = "$selected3";
+
+
+
+
+
     private TextView mTextViewResult;
     String mJsonString;
     private TextView text_sati;
@@ -62,26 +76,8 @@ public class fragment3_toiletstate extends Fragment {
     private static final String TAG_sati = "$result";
 
     //파이차트
-    int[] pieChartValues = {10, 10, 20, 20, 40};  //각 계열(Series)의 값
+    com.github.mikephil.charting.charts.PieChart pieChart;
 
-
-    public static final String TYPE = "type";
-
-    //각 계열(Series)의 색상
-
-    private static int[] COLORS = new int[]{Color.YELLOW, Color.GREEN, Color.BLUE, Color.MAGENTA, Color.CYAN};
-
-
-    //각 계열의 타이틀
-
-    String[] mSeriesTitle = new String[] {"PIE1", "PIE2", "PIE3", "PIE4", "PIE5" };
-
-
-    private CategorySeries mSeries = new CategorySeries("계열");
-
-    private DefaultRenderer mRenderer = new DefaultRenderer();
-
-    private GraphicalView mChartView;
 
 
 
@@ -107,45 +103,11 @@ public class fragment3_toiletstate extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment3_toiletstate, container, false);
+        pieChart = (com.github.mikephil.charting.charts.PieChart)v.findViewById(R.id.piechart);
 
-        mRenderer.setApplyBackgroundColor(true);
+        Getcomplain GC = new Getcomplain();
+        GC.execute("http://192.168.200.199/select_complain.php");
 
-        mRenderer.setBackgroundColor(Color.argb(100, 50, 50, 50));
-
-        mRenderer.setChartTitleTextSize(20);
-
-        mRenderer.setLabelsTextSize(30);
-
-        mRenderer.setLegendTextSize(30);
-
-        mRenderer.setMargins(new int[]{20, 30, 15, 0});
-
-        mRenderer.setZoomButtonsVisible(true);
-
-        mRenderer.setStartAngle(90);
-
-
-        if (mChartView == null) {
-
-            LinearLayout layout = (LinearLayout)v.findViewById(R.id.chart_pie);
-
-            mChartView = ChartFactory.getPieChartView(getContext(), mSeries, mRenderer);
-
-            mRenderer.setClickEnabled(true);
-
-            mRenderer.setSelectableBuffer(10);
-
-            layout.addView(mChartView, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT,
-
-                    LinearLayout.LayoutParams.FILL_PARENT));
-
-        } else {
-
-            mChartView.repaint();
-
-        }
-
-        fillPieChart();
 
         mTextViewResult = (TextView)v.findViewById(R.id.textView_main_result);
         fragment3_toiletstate.GetData task = new fragment3_toiletstate.GetData();
@@ -252,30 +214,157 @@ public class fragment3_toiletstate extends Fragment {
 
         return v;
     }
-    public void fillPieChart() {
 
-        for (int i = 0; i < pieChartValues.length; i++) {
+    private class Getcomplain extends AsyncTask<String, Void, String> {
+        ProgressDialog progressDialog;
+        String errorString = null;
 
-            mSeries.add(mSeriesTitle[i] + "_" + (String.valueOf(pieChartValues[i])), pieChartValues[i]);
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
 
-
-            //Chart에서 사용할 값, 색깔, 텍스트등을 DefaultRenderer객체에 설정
-
-            SimpleSeriesRenderer renderer = new SimpleSeriesRenderer();
-
-            renderer.setColor(COLORS[(mSeries.getItemCount() - 1) % COLORS.length]);
-
-
-            mRenderer.addSeriesRenderer(renderer);
-
-
-            if (mChartView != null)
-
-                mChartView.repaint();
-
+            progressDialog = ProgressDialog.show(getContext(),
+                    "Please Wait", null, true, true);
         }
 
-    }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+
+            progressDialog.dismiss();
+            //mTextViewResult.setText(result);
+            Log.d(TAG, "response  - " + result);
+
+            if (result == null){
+
+                //mTextViewResult.setText(errorString);
+            }
+            else {
+
+                mJsonString = result;
+                showcomplain();
+
+            }
+        }
+
+
+        @Override
+        protected String doInBackground(String... params) {
+
+            String data="";
+            /* 인풋 파라메터값 생성 */
+            String param = "t_name=" + Tnames +  "";
+            Log.e("POST",param);
+            String serverURL = params[0];
+            try {
+                /* 서버연결 */
+                URL url = new URL(serverURL);
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                conn.setRequestMethod("POST");
+                conn.setDoInput(true);
+                conn.connect();
+
+                /* 안드로이드 -> 서버 파라메터값 전달 */
+                OutputStream outs = conn.getOutputStream();
+                outs.write(param.getBytes("UTF-8"));
+                outs.flush();
+                outs.close();
+
+                /* 서버 -> 안드로이드 파라메터값 전달 */
+                InputStream is = null;
+                BufferedReader in = null;
+                is = conn.getInputStream();
+                in = new BufferedReader(new InputStreamReader(is), 8 * 1024);
+                String line = null;
+                StringBuffer buff = new StringBuffer();
+                while ( ( line = in.readLine() ) != null )
+                {
+                    buff.append(line + "\n");
+                }
+                data = buff.toString().trim();
+
+                /* 서버에서 응답 */
+                Log.e("RECV DATA",data);
+
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return data;
+        }
+
+
+    } //불만족 정보 가져오기
+
+    private void showcomplain(){
+        try {
+            JSONObject jsonObject = new JSONObject(mJsonString);
+            JSONArray jsonArray = jsonObject.getJSONArray(TAG_JSON);
+
+            for(int i=0;i<jsonArray.length();i++){
+
+                JSONObject item = jsonArray.getJSONObject(i);
+
+                int $selected0 = item.getInt(TAG_selected0);
+                int $selected1 = item.getInt(TAG_selected1);
+                int $selected2 = item.getInt(TAG_selected2);
+                int $selected3 = item.getInt(TAG_selected3);
+
+                pieChart.setUsePercentValues(true);
+                pieChart.getDescription().setEnabled(false);
+                pieChart.setExtraOffsets(5,10,5,5);
+
+                pieChart.setDragDecelerationFrictionCoef(0.95f);
+
+                pieChart.setDrawHoleEnabled(false);
+                pieChart.setHoleColor(Color.WHITE);
+                pieChart.setTransparentCircleRadius(61f);
+                pieChart.setEntryLabelColor(Color.BLACK);
+                ArrayList<PieEntry> yValues = new ArrayList<PieEntry>();
+
+
+
+                yValues.add(new PieEntry($selected0,"변기가 막힘"));
+                yValues.add(new PieEntry($selected1,"너무 지저분함"));
+                yValues.add(new PieEntry($selected2,"휴지가 없음"));
+                yValues.add(new PieEntry($selected3,"기타"));
+
+
+
+                Description description = new Description();
+                description.setText("불만족 사항"); //라벨
+                description.setTextSize(15);
+                pieChart.setDescription(description);
+
+                pieChart.animateY(1000, Easing.EasingOption.EaseInOutCubic); //애니메이션
+
+                PieDataSet dataSet = new PieDataSet(yValues,"COMPLAIN");
+                dataSet.setSliceSpace(3f);
+                dataSet.setSelectionShift(5f);
+                dataSet.setColors(ColorTemplate.VORDIPLOM_COLORS);
+
+                PieData data = new PieData((dataSet));
+                data.setValueTextSize(10f);
+                data.setValueTextColor(Color.BLACK);
+
+                pieChart.setData(data);
+
+            }
+
+
+        } catch (JSONException e) {
+
+            Log.d(TAG, "showResult : ", e);
+        }
+
+    }//불만족 변수 할당
+
+
     private class GetData extends AsyncTask<String, Void, String> {
         ProgressDialog progressDialog;
         String errorString = null;
@@ -294,12 +383,12 @@ public class fragment3_toiletstate extends Fragment {
             super.onPostExecute(result);
 
             progressDialog.dismiss();
-            mTextViewResult.setText(result);
+            //mTextViewResult.setText(result);
             Log.d(TAG, "response  - " + result);
 
             if (result == null){
 
-                mTextViewResult.setText(errorString);
+                //mTextViewResult.setText(errorString);
             }
             else {
 

@@ -126,8 +126,9 @@ public class Fragment3 extends Fragment  {
 
                         SRname = "subway";
                         GetData task = new GetData();
-                        task.execute("http://192.168.200.199/select_toilet.php");
+                        //task.execute("http://192.168.200.199/select_toilet.php");
                         //task.execute("http://172.17.108.227/select_toilet.php");
+                        task.execute("http://192.168.200.186/select_toilet.php");
 
                         break;
                     case 2:
