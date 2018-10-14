@@ -77,23 +77,17 @@ public class Fragment1 extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_fragment1, container, false);
 
-        //pref1 = getActivity().getSharedPreferences("pref1", getActivity().MODE_PRIVATE);
-        //editor1 = pref1.edit();
-
-
         bm_listview = (ListView) v.findViewById(R.id.bookmark_listview);
         TextView tx = (TextView) v.findViewById(R.id.empty2_text);
         bm_listview.setEmptyView(tx);
         bookmarkDB bmDB = new bookmarkDB();
         bmDB.execute("http://192.168.200.199/select_bookmark.php");
-        //bmDB.execute("http://192.168.0.15/select_bookmark.php"); //티아모
-        //bmDB.execute("http://172.17.108.227/select_bookmark.php"); //1공
 
 
 
         final ArrayAdapter<String> bmadapter = new ArrayAdapter<String>(getActivity(),R.layout.simple_list,list_bookmark);
 
-
+/*
         mBtn = (ImageButton)v.findViewById(R.id.popup_menu);
         mBtn.setOnClickListener(new View.OnClickListener(){
 
@@ -158,23 +152,7 @@ public class Fragment1 extends Fragment {
                                 }
                                 popup.dismiss();
 
-                                /*
-                                SparseBooleanArray checkedItems2 = bm_listview.getCheckedItemPositions();
 
-                                int count2 = list_bookmark.size();
-                                for (int i = count2-1; i >= 0; i--) {
-                                    if (checkedItems2.get(i)) {
-                                        Tnames=new String(list_bookmark.get(i));
-
-                                        //list_bookmark.remove(i) ;
-                                    }
-                                }
-                                Ubm2.execute();
-                                f1 = new Fragment1();
-                                fragmentTransaction = getFragmentManager().beginTransaction();
-                                fragmentTransaction.replace(R.id.fragment_container, f1);
-                                fragmentTransaction.addToBackStack(null);
-                                fragmentTransaction.commit();*/
 
 
                                 break;
@@ -185,7 +163,7 @@ public class Fragment1 extends Fragment {
                 });
                 popup.show();
             }
-        });
+        });*/
         return v;
     }
 
@@ -194,13 +172,13 @@ public class Fragment1 extends Fragment {
         String data = "";
         String errorString = null;
 
-        /*@Override
+        @Override
         protected void onPreExecute() {
             super.onPreExecute();
 
             //progressDialog = ProgressDialog.show(getContext(),
             //        "Please Wait", null, true, true);
-        }*/
+        }
 
 
         @Override
@@ -284,13 +262,13 @@ public class Fragment1 extends Fragment {
 
             }
 
-            //ArrayAdapter<String> bmadapter = new ArrayAdapter<String>(getActivity(),R.layout.simple_list,list_bookmark);
+            ArrayAdapter<String> bmadapter = new ArrayAdapter<String>(getActivity(),R.layout.simple_list,list_bookmark);
 
-            //bm_listview.setAdapter(bmadapter);
+            bm_listview.setAdapter(bmadapter);
 
         } catch (JSONException e) {
 
-            //Log.d(TAG, "showResult : ", e);
+            Log.d(TAG, "showResult : ", e);
         }
 
     }

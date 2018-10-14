@@ -67,9 +67,8 @@ public class ToiletAdapter extends ArrayAdapter<Toilet> {
     public ToiletAdapter(Activity activity, int resource,ArrayList<Toilet> toilets){
         super(activity, resource, toilets);
         this.activity = activity;
-        this.toilets = toilets; // 이거 바뀌ㅏ면
-        this.toiletsOri = toilets; // 이거도 바뀜?모름ㅇㅅㅇ 해보지 멍ㅇ
-        //this.newitems = new ArrayList<Toilet>();
+        this.toilets = toilets;
+        this.toiletsOri = toilets;
     }
 
     @Override
@@ -117,15 +116,6 @@ public class ToiletAdapter extends ArrayAdapter<Toilet> {
 
         pref1 = getContext().getSharedPreferences("pref1",MODE_PRIVATE);
         editor1 = pref1.edit();
-        //list_bookmark  = new ArrayList<>();
-        //showbookmark();
-/*
-        if (list_bookmark.size()!=0){
-            holder.check.setChecked(list_bookmark.contains(listViewItem.getToiletname()));
-            System.out.println(list_bookmark);
-        }
-*/
-
 
         holder.check.setOnCheckedChangeListener(onCheckedChangeListener(listViewItem));
         holder.check.setChecked(listViewItem.getBookmark());
@@ -144,34 +134,13 @@ public class ToiletAdapter extends ArrayAdapter<Toilet> {
                 Tnames = new String(t.getToiletname());
 
                 if (isChecked) { //체크했음
-                    //pref1 = getContext().getSharedPreferences("pref1",MODE_PRIVATE);
-                    //editor1 = pref1.edit();
-                    //list_bookmark  = new ArrayList<>();
-                    //showbookmark();
-                    //list_bookmark.add(t.getToiletname());
-                    //System.out.println(list_bookmark);
-                    //System.out.println(list_bookmark.get(0));
                     t.setBookmark("1");
-                    //Tbookmark = new Boolean(t.getBookmark());
                     updatebmDB Ubm = new updatebmDB();
                     Ubm.execute();
-
-                    //addbookmark(str);
-                    //savebookmark();
-
-                    //t.setSelected(true);
                 } else { //체크해제
                     t.setBookmark("0");
                     updatebmDB Ubm = new updatebmDB();
-                    //Tbookmark = new Boolean(t.getBookmark());
                     Ubm.execute();
-                    //list_bookmark.add(t.getToiletname());
-                    //Tbookmark = false;
-                    //showbookmark();
-                    //String str = new String(t.getToiletname());
-                    //deletebookmark(str);
-                    //savebookmark();
-                    //t.setSelected(false);
                 }
             }
         };
@@ -251,70 +220,6 @@ public class ToiletAdapter extends ArrayAdapter<Toilet> {
         }
     }
 
-/*
-    //배열안에 집어넣기
-    public void addbookmark(String value) {
-
-        String str1 = new String();
-
-        for(int i =0; i<list_bookmark.size(); i++){//중복검사
-            str1 = list_bookmark.get(i);
-            if (str1.equals(value)){
-                list_bookmark.remove(value);
-                list_bookmark.add(value);
-                return;
-            }
-        }
-        list_bookmark.add(value);
-    }
-    //배열에서 제거
-    public void deletebookmark(String value) {
-
-        String str1 = new String();
-
-        for(int i =0; i<list_bookmark.size(); i++){//중복검사
-            str1 = list_bookmark.get(i);
-            if (str1.equals(value)){
-                list_bookmark.remove(value);
-                return;
-            }
-        }
-    }
-    //내부메모리에 저장
-    public void savebookmark(){
-        ViewHolder holder = null;
-        JSONArray array = new JSONArray();
-        for(int i=0; i<list_bookmark.size();i++){
-            array.put(list_bookmark.get(i));
-        }
-        String a = array.toString();
-
-        //editor1.putBoolean("cb_bookmark",holder.check.isChecked());
-        editor1.putString("bookmark", a);
-        editor1.commit();
-    }
-    //내부메모리에서 불러오기
-    public void showbookmark(){
-        //checkData = pref1.getBoolean("cb_bookmark",false);
-        String json = pref1.getString("bookmark", null);
-        if (json != null){
-            try{
-                JSONArray array = new JSONArray(json);
-                list_bookmark.clear();
-
-                for(int i = array.length() - 1; i>=0;i--){
-                    String url = array.optString(i);
-                    list_bookmark.add(url);
-                }
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-*/
-
-
     //각 화장실 데이터 넣기
     public void addtoilet(Drawable icon, String toiletname, String toiletline, String bookmark){
         Toilet toilet = new Toilet();
@@ -348,11 +253,7 @@ public class ToiletAdapter extends ArrayAdapter<Toilet> {
 
         }
         else {
-            /*
-            for(Toilet to : toilets ) {
-                if (to.getToiletname().toLowerCase(Locale.getDefault()).contains(charText));
-                newitems.add(to);
-            }*/
+
 
             for (int i=0;i<toiletsOri.size();i++){
                 if (toiletsOri.get(i).getToiletname().toLowerCase().contains(charText)){
@@ -367,41 +268,4 @@ public class ToiletAdapter extends ArrayAdapter<Toilet> {
 
     }
 
-
 }
-
-/*ㄱ
-public void search(String charText){
-
-
-        // 어댑터 없을 때 리스트 두개로 검색하기 방법
-        Pattern p = Pattern.compile("^[a-zA-Z가-힣]*$");
-        Matcher m = p.matcher(charText);
-
-        mArrayList2.clear();
-
-        if (charText.length() == 0) {
-            mArrayList2.addAll(mArrayList);
-        }
-        else {
-            for (int i=0; i<mArrayList.size();i++){
-                String str = mArrayList.get(i).get("name");
-
-
-
-                if (str.toLowerCase().contains(charText)) {
-
-                    mArrayList2.add(mArrayList.get(i));
-                }
-            }
-        }
-        ListAdapter madapter = new SimpleAdapter(
-                getContext(), mArrayList2, R.layout.row_listview,
-                new String[]{TAG_name,TAG_line},
-                new int[]{R.id.toiletname, R.id.toiletline}
-
-        );
-        mlistView.setAdapter(madapter);
-
-    }
- */

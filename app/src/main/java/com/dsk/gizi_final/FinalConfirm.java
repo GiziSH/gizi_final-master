@@ -1,8 +1,6 @@
 package com.dsk.gizi_final;
 
-
 import android.app.ProgressDialog;
-import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -18,14 +16,16 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
 public class FinalConfirm extends Fragment{
-
     private static String TAG = "phptest_MainActivity";
     private static final String TAG_JSON="webnautes";
     private static final String TAG_NUM = "num";
@@ -43,13 +43,12 @@ public class FinalConfirm extends Fragment{
         View v = inflater.inflate(R.layout.fragment_finalconfirm, container, false);
 
         num = getArguments().getString("num");
-
+        Log.e("수정된 게시물 num", num);
         titleView = (TextView) v.findViewById(R.id.titleview);
         authorView = (TextView) v.findViewById(R.id.authorview);
         contentView = (TextView) v.findViewById(R.id.contentview);
 
         GetData task = new GetData();
-        //task.execute("http://172.17.108.227/board_confirm.php");
         task.execute("http://192.168.200.199/board_confirm.php");
 
         btn_commit = (Button) v.findViewById(R.id.commitbutton);
@@ -68,7 +67,7 @@ public class FinalConfirm extends Fragment{
     }
 
     private class GetData extends AsyncTask<String, Void, String> {
-
+        String data = "";
         ProgressDialog progressDialog;
         String errorString = null;
 
@@ -81,17 +80,17 @@ public class FinalConfirm extends Fragment{
         }
 
         @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
+        protected void onPostExecute(String data) {
+            super.onPostExecute(data);
             progressDialog.dismiss();
             //mTextViewResult.setText(result);
-            Log.d(TAG, "response  - " + result);
+            Log.d(TAG, "response  - " + data);
 
-            if (result == null){
+            if (data == null){
                 // mTextViewResult.setText(errorString);
             }
             else {
-                mJsonString = result;
+                mJsonString = data;
                 showResult();
             }
         }
@@ -103,67 +102,66 @@ public class FinalConfirm extends Fragment{
 
             String serverURL = params[0];
             try {
-
+                /* 서버연결 */
                 URL url = new URL(serverURL);
-                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
-                httpURLConnection.setReadTimeout(5000);
-                httpURLConnection.setConnectTimeout(5000);
-                httpURLConnection.connect();
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                conn.setRequestMethod("POST");
+                conn.setDoInput(true);
+                conn.connect();
 
-                int responseStatusCode = httpURLConnection.getResponseCode();
-                Log.d(TAG, "response code - " + responseStatusCode);
+                /* 안드로이드 -> 서버 파라메터값 전달 */
+                OutputStream outs = conn.getOutputStream();
+                outs.write(param.getBytes("UTF-8"));
+                outs.flush();
+                outs.close();
 
-                InputStream inputStream;
-                if(responseStatusCode == HttpURLConnection.HTTP_OK) {
-                    inputStream = httpURLConnection.getInputStream();
+                /* 서버 -> 안드로이드 파라메터값 전달 */
+                InputStream is = null;
+                BufferedReader in = null;
+                is = conn.getInputStream();
+                in = new BufferedReader(new InputStreamReader(is), 8 * 1024);
+                String line = null;
+                StringBuffer buff = new StringBuffer();
+                while ( ( line = in.readLine() ) != null )
+                {
+                    buff.append(line + "\n");
                 }
-                else{
-                    inputStream = httpURLConnection.getErrorStream();
-                }
+                data = buff.toString().trim();
 
-                InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
-                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-
-                StringBuilder sb = new StringBuilder();
-                String line;
-
-                while((line = bufferedReader.readLine()) != null){
-                    sb.append(line);
-                }
-                bufferedReader.close();
+                /* 서버에서 응답 */
+                Log.e("RECV DATA",data);
 
 
-                return sb.toString().trim();
-
-
-            } catch (Exception e) {
-
-                Log.d(TAG, "InsertData: Error ", e);
-                errorString = e.toString();
-
-                return null;
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
 
+            return data;
         }
     }
 
     private void showResult(){
-        String title = " ";
-        String author = " ";
-        String content = " ";
         try {
             JSONObject jsonObject = new JSONObject(mJsonString);
             JSONArray jsonArray = jsonObject.getJSONArray(TAG_JSON);
 
-            JSONObject item = jsonArray.getJSONObject(jsonArray.length()-1);
-            title = item.getString(TAG_TITLE);
-            author = item.getString(TAG_AUTHOR);
-            content = item.getString(TAG_CONTENT);
+            for(int i=0;i<jsonArray.length();i++) {
 
-            titleView.setText(title);
-            authorView.setText(author);
-            contentView.setText(content);
+                JSONObject item = jsonArray.getJSONObject(i);
 
+
+                //JSONObject item = jsonArray.getJSONObject(jsonArray.length()-1);
+                String title = item.getString(TAG_TITLE);
+                String author = item.getString(TAG_AUTHOR);
+                String content = item.getString(TAG_CONTENT);
+                Log.e("수정된 게시물", title + author + content);
+                titleView.setText(title);
+                authorView.setText(author);
+                contentView.setText(content);
+            }
         } catch (JSONException e) {
 
             Log.d(TAG, "showResult : ", e);

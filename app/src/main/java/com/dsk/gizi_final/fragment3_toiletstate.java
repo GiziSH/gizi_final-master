@@ -8,10 +8,13 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -107,6 +110,14 @@ public class fragment3_toiletstate extends Fragment {
 
         Getcomplain GC = new Getcomplain();
         GC.execute("http://192.168.200.199/select_complain.php");
+
+        ImageButton reload = (ImageButton)v.findViewById(R.id.reload);
+        reload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               refresh();
+            }
+        });
 
 
         mTextViewResult = (TextView)v.findViewById(R.id.textView_main_result);
@@ -215,6 +226,10 @@ public class fragment3_toiletstate extends Fragment {
         return v;
     }
 
+    private void refresh(){
+        android.support.v4.app.FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+        fragmentTransaction.detach(this).attach(this).commit();
+    }
     private class Getcomplain extends AsyncTask<String, Void, String> {
         ProgressDialog progressDialog;
         String errorString = null;

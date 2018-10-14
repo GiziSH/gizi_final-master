@@ -3,10 +3,10 @@ package com.dsk.gizi_final;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
-import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,7 +44,6 @@ public class ListDetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_listdetailfragment, container, false);
-
         num = getArguments().getString("num");
         title = getArguments().getString("title");
         author = getArguments().getString("author");
@@ -80,8 +79,8 @@ public class ListDetailFragment extends Fragment {
                         } catch(NullPointerException e) {
                             Log.e("err",e.getMessage());
                         }
-                        GetPassword getpw = new GetPassword();
-                        getpw.execute();
+                        UpdatePassword updatepw = new UpdatePassword();
+                        updatepw.execute();
                     }
                 });
                 ad.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -90,18 +89,36 @@ public class ListDetailFragment extends Fragment {
 
                     }
                 }).show();
-
-
             }
         });
 
         btn_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DeleteFragment deleteFragment = new DeleteFragment();
-                android.support.v4.app.FragmentTransaction fragmenttransaction = getFragmentManager().beginTransaction();
-                fragmenttransaction.replace(R.id.fragment_container, deleteFragment);
-                fragmenttransaction.commit();
+                AlertDialog.Builder ad = new AlertDialog.Builder(getContext());
+                ad.setTitle("비밀번호 확인");
+                ad.setMessage("비밀번호를 입력해주세요.");
+                final EditText et = new EditText(getContext());
+                ad.setView(et);
+
+                ad.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        try {
+                            insert_pw = et.getText().toString();
+                        } catch(NullPointerException e) {
+                            Log.e("err",e.getMessage());
+                        }
+                        DeletePassword deletepw = new DeletePassword();
+                        deletepw.execute();
+                    }
+                });
+                ad.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                }).show();
             }
         });
 
@@ -118,7 +135,7 @@ public class ListDetailFragment extends Fragment {
         return v;
     }
 
-    private class GetPassword extends AsyncTask<String, Void, String>{
+    private class UpdatePassword extends AsyncTask<String, Void, String>{
         String data = "";
         ProgressDialog progressDialog;
 
@@ -128,14 +145,13 @@ public class ListDetailFragment extends Fragment {
             progressDialog = ProgressDialog.show(getContext(),
                     "Please Wait", null, true, true);
         }
-
-
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
             progressDialog.dismiss();
             //mTextViewResult.setText(result);
             Log.d(TAG, "result  - " + result);
+            Log.e("뭘까",data);
 
             if(data.equals("1")) {
                 Bundle bundle = new Bundle();
@@ -148,6 +164,7 @@ public class ListDetailFragment extends Fragment {
                 writeFixFragment.setArguments(bundle);
                 android.support.v4.app.FragmentTransaction fragmenttransaction = getFragmentManager().beginTransaction();
                 fragmenttransaction.replace(R.id.fragment_container, writeFixFragment);
+                fragmenttransaction.addToBackStack(null);
                 fragmenttransaction.commit();
             }
         }
@@ -199,26 +216,147 @@ public class ListDetailFragment extends Fragment {
         }
     }
 
-    /*private void showResult() {
-        try {
-            JSONObject jsonObject = new JSONObject(mJsonString);
-            JSONArray jsonArray = jsonObject.getJSONArray(TAG_JSON);
+    private class DeletePassword extends AsyncTask<String, Void, String>{
+        String data = "";
+        ProgressDialog progressDialog;
 
-            for (int i = 0; i < jsonArray.length(); i++) {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog = ProgressDialog.show(getContext(),
+                    "Please Wait", null, true, true);
+        }
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            progressDialog.dismiss();
+            //mTextViewResult.setText(result);
+            Log.d(TAG, "result  - " + result);
+            Log.e("뭘까",data);
 
-                JSONObject item = jsonArray.getJSONObject(i);
-
-                password = item.getString(TAG_PASSWORD);
-                Log.d(TAG, "password  - " + password);
-
-
+            if(data.equals("1")) {
+                DeleteDB deleteDB = new DeleteDB();
+                deleteDB.execute("http://192.168.200.199/board_delete.php");
+                DeleteDB admin_deleteDB = new DeleteDB();
+                admin_deleteDB.execute("http://192.168.200.199/admin_delete.php");
+                Fragment4 fragment4 = new Fragment4();
             }
-        } catch (JSONException e) {
+        }
+        @Override
+        protected String doInBackground(String... params) {
 
-            Log.d(TAG, "showResult : ", e);
+            String param = "u_num=" + num + "&insert_pw="+ insert_pw +"";
+            //String serverURL = params[0];
+            try {
+                /* 서버연결 */
+                URL url = new URL(
+                        "http://192.168.200.199/get_password.php");
+                //URL url = new URL(serverURL);
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                conn.setRequestMethod("POST");
+                conn.setDoInput(true);
+                conn.connect();
+
+                /* 안드로이드 -> 서버 파라메터값 전달 */
+                OutputStream outs = conn.getOutputStream();
+                outs.write(param.getBytes("UTF-8"));
+                outs.flush();
+                outs.close();
+
+                /* 서버 -> 안드로이드 파라메터값 전달 */
+                InputStream is = null;
+                BufferedReader in = null;
+
+                is = conn.getInputStream();
+                in = new BufferedReader(new InputStreamReader(is), 8 * 1024);
+                String line = null;
+                StringBuffer buff = new StringBuffer();
+                while ((line = in.readLine()) != null) {
+                    buff.append(line + "\n");
+                }
+                data = buff.toString().trim();
+                Log.e("RECV DATA", data);
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+
+        }
+    }
+
+    public class DeleteDB extends AsyncTask<String, Integer, String> {
+        String data = "";
+        @Override
+        protected String doInBackground(String... params) {
+            /* 인풋 파라메터값 생성 */
+            String param = "u_num=" + num ;
+            Log.e("POST", param);
+            String serverURL = params[0];
+            try {
+                /* 서버연결 */
+                URL url = new URL(serverURL);
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                conn.setRequestMethod("POST");
+                conn.setDoInput(true);
+                conn.connect();
+
+                /* 안드로이드 -> 서버 파라메터값 전달 */
+                OutputStream outs = conn.getOutputStream();
+                outs.write(param.getBytes("UTF-8"));
+                outs.flush();
+                outs.close();
+
+                /* 서버 -> 안드로이드 파라메터값 전달 */
+                InputStream is = null;
+                BufferedReader in = null;
+
+                is = conn.getInputStream();
+                in = new BufferedReader(new InputStreamReader(is), 8 * 1024);
+                String line = null;
+                StringBuffer buff = new StringBuffer();
+                while ((line = in.readLine()) != null) {
+                    buff.append(line + "\n");
+                }
+                data = buff.toString().trim();
+                Log.e("받았니", data);
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return data;
         }
 
-        //return password;
-    }*/
-}
+        @Override
+        protected void onPostExecute(String data) {
+            super.onPostExecute(data);
+            /* 서버에서 응답 */
+            Log.e("서버연결", data);
+            /*AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getContext());
 
+            if(data.equals("1"))
+            {
+                Log.e("RESULT","성공적으로 처리되었습니다!");
+                alertBuilder
+                        .setTitle("알림")
+                        .setMessage("삭제되었습니다!")
+                        .setCancelable(true)
+                        .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        });
+                AlertDialog dialog = alertBuilder.create();
+                dialog.show();
+            }*/
+        }
+    }
+}

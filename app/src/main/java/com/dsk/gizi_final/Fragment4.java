@@ -1,7 +1,6 @@
 package com.dsk.gizi_final;
 
 import android.app.ProgressDialog;
-import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -14,7 +13,6 @@ import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -58,18 +56,15 @@ public class Fragment4 extends Fragment {
                 WriteFragment writeFragment = new WriteFragment();
                 android.support.v4.app.FragmentTransaction fragmenttransaction = getFragmentManager().beginTransaction();
                 fragmenttransaction.replace(R.id.fragment_container, writeFragment);
-                fragmenttransaction.addToBackStack(null);
                 fragmenttransaction.commit();
             }
         });
 
-        GetData2 refresh = new GetData2();
+        GetData refresh = new GetData();
         refresh.execute("http://192.168.200.199/num_refresh.php");
-        //refresh.execute("http://172.17.108.227/num_refresh.php");
 
-        GetData2 task = new GetData2();
+        GetData task = new GetData();
         task.execute("http://192.168.200.199/getjson.php");
-        //task.execute("http://172.17.108.227/getjson.php");
 
         mlistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -89,7 +84,6 @@ public class Fragment4 extends Fragment {
                 listDetailFragment.setArguments(bundle);
                 android.support.v4.app.FragmentTransaction fragmenttransaction = getFragmentManager().beginTransaction();
                 fragmenttransaction.replace(R.id.fragment_container, listDetailFragment);
-                fragmenttransaction.addToBackStack(null);
                 fragmenttransaction.commit();
 
             }
@@ -99,7 +93,7 @@ public class Fragment4 extends Fragment {
 
 
 
-    private class GetData2 extends AsyncTask<String, Void, String> {
+    private class GetData extends AsyncTask<String, Void, String> {
         ProgressDialog progressDialog;
         String errorString = null;
 
@@ -124,7 +118,7 @@ public class Fragment4 extends Fragment {
             }
             else {
                 mJsonString = result;
-                showResult2();
+                showResult();
             }
         }
 
@@ -187,7 +181,7 @@ public class Fragment4 extends Fragment {
     }
 
 
-    private void showResult2(){
+    private void showResult(){
         try {
             JSONObject jsonObject = new JSONObject(mJsonString);
             JSONArray jsonArray = jsonObject.getJSONArray(TAG_JSON);
@@ -229,4 +223,3 @@ public class Fragment4 extends Fragment {
     }
 
 }
-
